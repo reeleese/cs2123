@@ -17,16 +17,19 @@ int main() {
     scanf("%d", &number);
     if (number < 0)
       done = 1;
-    else
+    else if (number == 0)
+      printf("Result: zero\n\n");
+    else if (number < 1000000)
       print(number);
+    else
+      printf("Number must be in the range [0, 999,999]");
   }
   
   return 0;
 }
 
 void print(int value) {
-  printf("Result: ");
-  
+  printf("Result:");
   /* For XXX,YYY front chunk = XXX, back chunk = YYY */
   int frontChunk = value / 1000;
   int backChunk  = value % 1000;
@@ -34,10 +37,6 @@ void print(int value) {
   if (frontChunk > 0) {
     subPrint(frontChunk);
     printf(" thousand");
-    
-    /* check if more space is required */ 
-    if (backChunk > 0)
-      printf(" ");
   }
   
   if (backChunk > 0)
@@ -62,7 +61,7 @@ void subPrint(int chunk) {
   int pv100 = (chunk / 100) % 10;
 
   if (pv100 > 0)
-    printf("%s hundred", ones[pv100]);
+    printf(" %s hundred", ones[pv100]);
   if (pv10 == 1)
     printf(" %s", special[pv1]);
   else {
