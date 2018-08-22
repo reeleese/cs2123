@@ -1,0 +1,34 @@
+Give a number [0, 999,999]
+>0
+Result: zero
+
+Give a number [0, 999,999]
+>1
+Result: one
+
+Give a number [0, 999,999]
+>11
+Result: eleven
+
+Give a number [0, 999,999]
+>256
+Result: two hundred fifty six
+
+Give a number [0, 999,999]
+>1729
+Result: one thousand seven hundred twenty nine
+
+Give a number [0, 999,999]
+>2001
+Result: two thousand one
+
+Give a number [0, 999,999]
+>12345
+Result: twelve thousand three hundred forty five
+
+Give a number [0, 999,999]
+>13000
+Result: thirteen thousand
+
+Give a number [0, 999,999]
+>-1
