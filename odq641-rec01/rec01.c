@@ -4,85 +4,72 @@
 */
 
 #include <stdio.h>
-#include <string.h>
 
-void intToString(int);
-void printo(int);
-char* ones(int);
-char* tens(int);
-
+void print(int);
+void subPrint(int);
 
 int main() {
-  int iUser;
-  
-  /* Loop */
-  while(iUser != -1) {
-    /* Get value */
-    printf("Enter a value.\n> ");
-    iUser = -1;
-    scanf("%d", &iUser);
-
-    printo(iUser);
-
+  /* menu loop */
+  char done = 0;
+  int number;
+  while(done == 0) {
+    printf("Give a number [0, 999,999]\n>");
+    scanf("%d", &number);
+    if (number < 0)
+      done = 1;
+    else
+      print(number);
   }
+  
   return 0;
 }
-void printo(int i) {
+
+void print(int value) {
   printf("Result: ");
-  if (i > 999) {
-    intToString(i/1000);
-    printf(" thousand ");
+  
+  /* For XXX,YYY front chunk = XXX, back chunk = YYY */
+  int frontChunk = value / 1000;
+  int backChunk  = value % 1000;
+  
+  if (frontChunk > 0) {
+    subPrint(frontChunk);
+    printf(" thousand");
+    
+    /* check if more space is required */ 
+    if (backChunk > 0)
+      printf(" ");
   }
-  intToString(i % 100000);
+  
+  if (backChunk > 0)
+    subPrint(backChunk);
+
   printf("\n\n");
 }
 
-void intToString(int i) {
-  int pv1 = i % 10;
-  int pv10 = (i % 100) / 10;
-  int pv100 = i / 100;
+void subPrint(int chunk) {
+  /* important arrays for decoding by digit */
+  static const char* ones[]    = {"", "one", "two", "three", "four", "five",
+                                  "six", "seven", "eight", "nine"};
+  static const char* tens[]    = {"", "", "twenty", "thirty", "forty", "fifty",
+                                  "sixty", "seventy", "eighty", "ninety"};
+  static const char* special[] = {"ten", "eleven", "twelve", "thirteen",
+                                  "fourteen", "fifteen", "sixteen", "seventeen",
+                                  "eighteen", "nineteen"};
 
-  /* Compose 'suffix', the 0-99 part */
-  char suffix[100];
-  char* teens[] = {"ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen",
-                   "sixteen", "seventeen", "eighteen", "nineteen"};
+  /* each digit in chunk by place value */
+  int pv1   = chunk % 10;
+  int pv10  = (chunk / 10) % 10;
+  int pv100 = (chunk / 100) % 10;
+
+  if (pv100 > 0)
+    printf("%s hundred", ones[pv100]);
   if (pv10 == 1)
-    strcpy(suffix, teens[pv1]);
+    printf(" %s", special[pv1]);
   else {
-    strcpy(suffix, tens(pv10));
-    strcat(suffix, " ");
-    strcat(suffix, ones(pv1));
+    if (pv10 > 0)
+      printf(" %s", tens[pv10]);
+    if (pv1 > 0)
+      printf(" %s", ones[pv1]);
   }
-
-  /* compose 'prefix', the hundreds place */
-  char prefix[80];
-  if (pv100 > 0) {
-    strcpy(prefix, ones(pv100));
-    strcat(prefix, " hundred ");
-  }
-  else
-    strcpy(prefix, "");
-
-  /* return prefix + suffix */
-  strcat(prefix, suffix);
-  printf("%s", prefix);
 }
-
-char* ones(int digit) {
-  char* stuff[] = {"", "one", "two", "three", "four", "five", "six",
-                  "seven", "eight", "nine"};
-  if (digit < 0 || digit > 9)
-    return "<REALLY BAD>";
-  return stuff[digit];
-}
-
-char* tens(int digit) {
-  char* stuff[] = {"", "", "twenty", "thirty", "forty", "fifty", "sixty",
-                  "seventy", "eighty", "ninety"};
-  if (digit < 0 || digit > 9)
-    return "<REALLY BAD>";
-  return stuff[digit];
-
-}
-
 
