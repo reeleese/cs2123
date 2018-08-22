@@ -2,7 +2,9 @@
   Author: Lee Reese odq641
   Recitation Excercise 1
 */
+
 #include <stdio.h>
+#include <string.h>
 
 char* intToString(int);
 char* thingy(int);
@@ -12,36 +14,31 @@ int main() {
   
   /* Loop */
   while(iUser != -1) {
+    /* Get value */
     printf("Enter a value.\n> ");
     iUser = -1;
     scanf("%d", &iUser);
+
+    char* result = intToString(iUser);
+    printf("result: %s\n\n", result);
   }
-  
-  printf("result: %d\n\n");
   return 0;
 }
 
 char* intToString(int i) {
-  int ones = i % 10;
-  int tens = (i % 100) / 10;
-  int hundreds = i / 100;
+  printf("intToString IN\n");
+  int pv1 = i % 10;
+  int pv10 = (i % 100) / 10;
+  int pv100 = i / 100;
 
-  char suffix[50];
-  if (tens == 1) {
-    switch(ones) {
-    case 0: return "";
-    case 1: return "eleven";
-    case 2: return "twelve";
-    case 3: return "thirteen";
-    case 4: return "fourteen";
-    case 5: return "fifteen";
-    case 6: return "sixteen";
-    case 7: return "seventeen";
-    case 8: return "eighteen";
-    case 9: return "nineteen";
-    }/*end switch*/
-  }/*end if*/
-  
+  char suffix[100];
+  char* teens[] = {"eleven", "twelve", "thirteen", "fourteen", "fifteen",
+                    "sixteen", "seventeen", "eighteen", "nineteen"};
+  if (pv10 == 1)
+    strcpy(suffix, teens[pv1 -1]);
+  printf("intToString OUT\n");
+
+  return suffix;
 }
 
 char* ones(int digit) {
