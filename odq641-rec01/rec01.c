@@ -6,8 +6,11 @@
 #include <stdio.h>
 #include <string.h>
 
-char* intToString(int);
-char* thingy(int);
+void intToString(int);
+void printo(int);
+char* ones(int);
+char* tens(int);
+
 
 int main() {
   int iUser;
@@ -19,58 +22,66 @@ int main() {
     iUser = -1;
     scanf("%d", &iUser);
 
-    char* result = intToString(iUser);
-    printf("result: %s\n\n", result);
+    printo(iUser);
+
   }
   return 0;
 }
+void printo(int i) {
+  printf("Result: ");
+  if (i > 999) {
+    intToString(i/1000);
+    printf(" thousand ");
+  }
+  intToString(i % 100000);
+  printf("\n\n");
+}
 
-char* intToString(int i) {
-  printf("intToString IN\n");
+void intToString(int i) {
   int pv1 = i % 10;
   int pv10 = (i % 100) / 10;
   int pv100 = i / 100;
 
+  /* Compose 'suffix', the 0-99 part */
   char suffix[100];
-  char* teens[] = {"eleven", "twelve", "thirteen", "fourteen", "fifteen",
-                    "sixteen", "seventeen", "eighteen", "nineteen"};
+  char* teens[] = {"ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen",
+                   "sixteen", "seventeen", "eighteen", "nineteen"};
   if (pv10 == 1)
-    strcpy(suffix, teens[pv1 -1]);
-  printf("intToString OUT\n");
+    strcpy(suffix, teens[pv1]);
+  else {
+    strcpy(suffix, tens(pv10));
+    strcat(suffix, " ");
+    strcat(suffix, ones(pv1));
+  }
 
-  return suffix;
+  /* compose 'prefix', the hundreds place */
+  char prefix[80];
+  if (pv100 > 0) {
+    strcpy(prefix, ones(pv100));
+    strcat(prefix, " hundred ");
+  }
+  else
+    strcpy(prefix, "");
+
+  /* return prefix + suffix */
+  strcat(prefix, suffix);
+  printf("%s", prefix);
 }
 
 char* ones(int digit) {
-  switch(digit) {
-    case 0: return "";
-    case 1: return "one";
-    case 2: return "two";
-    case 3: return "three";
-    case 4: return "four";
-    case 5: return "five";
-    case 6: return "six";
-    case 7: return "seven";
-    case 8: return "eight";
-    case 9: return "nine";
-  }
-  return "<too_big>";
+  char* stuff[] = {"", "one", "two", "three", "four", "five", "six",
+                  "seven", "eight", "nine"};
+  if (digit < 0 || digit > 9)
+    return "<REALLY BAD>";
+  return stuff[digit];
 }
 
 char* tens(int digit) {
-  switch(digit) {
-    case 0: return "";
-    case 1: return ""; /*special cases*/
-    case 2: return "twenty";
-    case 3: return "thirty";
-    case 4: return "forty";
-    case 5: return "fifty";
-    case 6: return "sixty";
-    case 7: return "seventy";
-    case 8: return "eighty";
-    case 9: return "ninety";
-  }
-  return "<too_big>";
+  char* stuff[] = {"", "", "twenty", "thirty", "forty", "fifty", "sixty",
+                  "seventy", "eighty", "ninety"};
+  if (digit < 0 || digit > 9)
+    return "<REALLY BAD>";
+  return stuff[digit];
 
 }
 
