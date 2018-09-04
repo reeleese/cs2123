@@ -5,7 +5,7 @@
 
 #include <stdio.h>
 
-/* swaps pointer variables */
+/* Swaps values pointed to by *pp1 and *pp2 */
 void exchange(int **pp1, int **pp2);
 
 /* Given functions */
@@ -22,6 +22,7 @@ void increaseD(int *pval) {
   (*pval)++;
 }
 
+/* Main */
 int main() {
   int temp, *ptemp,  sum;
   int a=10, b=20, c=30;
