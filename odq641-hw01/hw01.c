@@ -1,5 +1,5 @@
 /******************** HW01 **************************************
-Author:  //Your name here
+Author:  Lee Reese
 
 Purpose:
     Accepts a finished or unfinished sudoku puzzle and returns a correct
@@ -28,38 +28,37 @@ void printPossibleNums(char puzzValues[][9], char check[], int row, int column);
 int checkSolution(char puzzValues[][9], char check[]);
 
 
-int main(int argc, char *argv[])
-{
-	int solution;
-	char puzzValues[9][9];
-	char type;
-	char check[10];
+int main(int argc, char *argv[]) {
+  int solution;
+  char puzzValues[9][9];
+  char type;
+  char check[10];
 
-	//Check to make sure a puzzle file was given
-	if (argc != 2) {
-		printf("Command line error\n");
-		exit(-1);
-	}
+  //Check to make sure a puzzle file was given
+  if (argc != 2) {
+    printf("Command line error\n");
+    exit(-1);
+  }
 
-	inputPuzzle(puzzValues, &type, argv);
+  inputPuzzle(puzzValues, &type, argv);
+  
+  printPuzzle(puzzValues, type);
 
-	printPuzzle(puzzValues, type);
-
-	if (type == 1)
-		analyzePuzzle(puzzValues, type, check);
-	else if (type == 2)
-	{
-		solution = checkSolution(puzzValues, check);
+  if (type == 1)
+    analyzePuzzle(puzzValues, type, check);
+  
+  else if (type == 2) {
+      solution = checkSolution(puzzValues, check);
 	
-		if (solution == 0)
-			printf("Yes\n");
-		else if (solution == 1)
-			printf("No\n");
-        else
-            printf("Finish your code!\n");
-	}
+      if (solution == 0)
+        printf("Yes\n");
+      else if (solution == 1)
+        printf("No\n");
+      else
+        printf("Finish your code!\n");
+  }/* end elif */
 
-	return 0;
+  return 0;
 }
 
 /******************** inputPuzzle **************************************
@@ -78,56 +77,53 @@ Notes:
     to find possible solutions use 0s to indicate a blank space.  Nested for
     loops are used to traverse the 2d array and input values.
 **************************************************************************/
-void inputPuzzle(char puzzValues[][9], char *type, char *argv[]) 
-{
-	int userChoice, tmp, i, j;
-	int lBound, uBound = 9;
+void inputPuzzle(char puzzValues[][9], char *type, char *argv[]) {
+  int userChoice, tmp, i, j;
+  int lBound, uBound = 9;
 
-	FILE *puzzleInput = fopen(argv[1], "r");
+  FILE *puzzleInput = fopen(argv[1], "r");
 
-	if (puzzleInput == NULL) {
-		printf("Error opening the file: %s", argv[1]);
-		exit(-1);
-	}
+  if (puzzleInput == NULL) {
+    printf("Error opening the file: %s", argv[1]);
+    exit(-1);
+  }
 
-	//Read the puzzle type
-	fscanf(puzzleInput, "%d\n", &userChoice);
+  //Read the puzzle type
+  fscanf(puzzleInput, "%d\n", &userChoice);
+  
+  if (userChoice != 1 && userChoice !=2) {
+    printf("Invalid puzzle type: %d\n", userChoice);
+    exit(-1);
+  }
 
-	if (userChoice != 1 && userChoice !=2) {
-		printf("Invalid puzzle type: %d\n", userChoice);
-		exit(-1);
-	}
+  *type = userChoice;
 
-	*type = userChoice;
-
-	if (userChoice == 1)
-		lBound = 0;
-	else
-		lBound = 1;
+  if (userChoice == 1)
+    lBound = 0;
+  else
+    lBound = 1;
 
 
-	for(i=0; i<9; i++)
-	{
-    	for(j=0; j<9; j++)
-    	{
-        	if (fscanf(puzzleInput, "%d ", &tmp) == 1)
-        	{
-        		if (tmp < lBound || tmp > uBound) {
-        			printf("Input value outside of bounds: %d", tmp);
-        			exit(-1);
-        		}
-        		else
-        			puzzValues[i][j] = tmp;
-        	}
-        	else {
-        		printf("Error reading file\n");
-        		exit(-1);
-        	}
-	    }
-	}
-
-	fclose(puzzleInput);
-}
+  for(i=0; i<9; i++) {
+    for(j=0; j<9; j++) {
+      if (fscanf(puzzleInput, "%d ", &tmp) == 1) {
+        if (tmp < lBound || tmp > uBound) {
+          printf("Input value outside of bounds: %d", tmp);
+          exit(-1);
+        }
+        else
+          puzzValues[i][j] = tmp;
+      }/* end if */
+      
+      else {
+        printf("Error reading file\n");
+        exit(-1);
+      }
+    }/* end for j */
+  }/* end for i */
+  
+  fclose(puzzleInput);
+}/* end function */
 
 /******************** printPuzzle **************************************
 void printPuzzle(char puzzValues[][9], char type)
@@ -141,19 +137,17 @@ Returns:
 Notes:
     Nested for loops are used to traverse the two dimensional array.
 **************************************************************************/
-void printPuzzle(char puzzValues[][9], char type)
-{
-	int i, j;
+void printPuzzle(char puzzValues[][9], char type) {
+  int i, j;
 
-	printf("%d\n", type);
+  printf("%d\n", type);
 
-	for (i=0; i<9; i++)
-	{
-		for (j=0; j<9; j++)
-			printf("%d ", puzzValues[i][j]);
+  for (i=0; i<9; i++) {
+    for (j=0; j<9; j++)
+      printf("%d ", puzzValues[i][j]);
 
-		printf("\n");
-	}
+    printf("\n");
+  }
 }
 
 /******************** analyzePuzzle **************************************
@@ -172,8 +166,7 @@ Notes:
     at puzzValues[i][j], its row, column, and small square are checked.  The
     possible values are then printed.
 **************************************************************************/
-void analyzePuzzle(char puzzValues[][9], char type, char check[])
-{
+void analyzePuzzle(char puzzValues[][9], char type, char check[]) {
 	
 }
 
@@ -192,8 +185,7 @@ Notes:
     int row and int column are the coordinates of the square currently
     being checked.
 **************************************************************************/
-void checkRow(char puzzValues[][9], char check[], int row, int column)
-{
+void checkRow(char puzzValues[][9], char check[], int row, int column) {
 	
 }
 
@@ -212,8 +204,7 @@ Notes:
     int row and int column are the coordinates of the square currently
     being checked.
 **************************************************************************/
-void checkColumn(char puzzValues[][9], char check[], int row, int column)
-{
+void checkColumn(char puzzValues[][9], char check[], int row, int column) {
 	
 }
 
@@ -234,8 +225,7 @@ Notes:
     containing [i][j].  Nested for loops are used to move through the small
     square, incrementing check[].
 **************************************************************************/
-void checkSquare(char puzzValues[][9], char check[], int row, int column)
-{
+void checkSquare(char puzzValues[][9], char check[], int row, int column) {
 	
 }
 
@@ -255,8 +245,7 @@ Notes:
     value at check[i] is zero, it means that i is a possible solution
     for that square.
 **************************************************************************/
-void printPossibleNums(char puzzValues[][9], char check[], int row, int column)
-{
+void printPossibleNums(char puzzValues[][9], char check[], int row, int column) {
 	
 }
 
@@ -272,7 +261,6 @@ Returns:
 Notes:
     The check[] array is used to identify if a solution is correct or not.
 **************************************************************************/
-int checkSolution(char puzzValues[][9], char check[])
-{
+int checkSolution(char puzzValues[][9], char check[]) {
 	return -1;
 }
