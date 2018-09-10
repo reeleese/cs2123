@@ -172,7 +172,7 @@ void analyzePuzzle(char puzzValues[][9], char type, char check[]) {
   for(i=0; i<9; i++)
     for (j=0; j<9; j++) {
       
-      /* Only handle empty cells */
+      /* Ignore populated cells */
       if (puzzValues[i][j] != 0)
         continue;
       
@@ -184,14 +184,9 @@ void analyzePuzzle(char puzzValues[][9], char type, char check[]) {
       checkRow(puzzValues, check, i, j);
       checkColumn(puzzValues, check, i, j);
       checkSquare(puzzValues, check, i, j);
-      
-      /* Print available values at [i][j] */
-      printf("[%d][%d]:", i, j);
-      for(k=1; k<10; k++)
-        if(check[k] == 0)
-          printf(" %d,", k);
-      
-      printf("\b \n"); /* remove final comma and newline */
+
+      /* Print results */
+      printPossibleNums(puzzValues, check, i, j);
     }
 }
 
@@ -279,7 +274,15 @@ Notes:
     for that square.
 **************************************************************************/
 void printPossibleNums(char puzzValues[][9], char check[], int row, int column) {
-	
+  printf("[%d][%d]:", row, column);
+  
+  for(int k=1; k<10; k++)
+    if(check[k] == 0)
+      printf(" %d,", k);
+
+  /* remove final comma and newline */
+  printf("\b \n");
+
 }
 
 /******************** checkSolution **************************************
