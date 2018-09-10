@@ -169,7 +169,7 @@ Notes:
 void analyzePuzzle(char puzzValues[][9], char type, char check[]) {
   int i, j, k;
 
-  for(i=0; i<9; i++)
+  for(i=0; i<9; i++) {
     for (j=0; j<9; j++) {
       
       /* Ignore populated cells */
@@ -187,8 +187,10 @@ void analyzePuzzle(char puzzValues[][9], char type, char check[]) {
 
       /* Print results */
       printPossibleNums(puzzValues, check, i, j);
-    }
-}
+      
+    }/* end for j */
+  } /* end for i */
+} /* end function */
 
 /******************** checkRow **************************************
 void checkRow(char puzzValues[][9], char check[], int row, int column)
@@ -275,7 +277,8 @@ Notes:
 **************************************************************************/
 void printPossibleNums(char puzzValues[][9], char check[], int row, int column) {
   printf("[%d][%d]:", row, column);
-  
+
+  /* If check[i] != 0, then i is not a valid solution for this square */
   for(int k=1; k<10; k++)
     if(check[k] == 0)
       printf(" %d,", k);
@@ -298,5 +301,24 @@ Notes:
     The check[] array is used to identify if a solution is correct or not.
 **************************************************************************/
 int checkSolution(char puzzValues[][9], char check[]) {
-	return -1;
+  int i, j, k;
+
+  for (i=0; i<9; i++) {
+    for (j=0; j<9; j++) {
+      /* 0 out check */
+      for (k=0; k<10; k++)
+        check[k] = 0;
+
+      /* Analyze surrounding cells for available values */
+      checkRow(puzzValues, check, i, j);
+      checkColumn(puzzValues, check, i, j);
+      checkSquare(puzzValues, check, i, j);
+
+      for (k=0; k<10; k++)
+        if(3 < check[k] || check[k] > 3)
+          return 1;
+    }/* end for j */
+  }/* end for i */
+  
+  return 0;
 }
