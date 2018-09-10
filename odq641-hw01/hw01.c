@@ -167,7 +167,32 @@ Notes:
     possible values are then printed.
 **************************************************************************/
 void analyzePuzzle(char puzzValues[][9], char type, char check[]) {
-	
+  int i, j, k;
+
+  for(i=0; i<9; i++)
+    for (j=0; j<9; j++) {
+      
+      /* Only handle empty cells */
+      if (puzzValues[i][j] != 0)
+        continue;
+      
+      /* 0 out check */
+      for (k=0; k<10; k++)
+        check[k] = 0;
+
+      /* Analyze surrounding cells for available values */
+      checkRow(puzzValues, check, i, j);
+      checkColumn(puzzValues, check, i, j);
+      checkSquare(puzzValues, check, i, j);
+      
+      /* Print available values at [i][j] */
+      printf("[%d][%d]:", i, j);
+      for(k=1; k<10; k++)
+        if(check[k] == 0)
+          printf(" %d,", k);
+      
+      printf("\b \n"); /* remove final comma and newline */
+    }
 }
 
 /******************** checkRow **************************************
@@ -186,7 +211,8 @@ Notes:
     being checked.
 **************************************************************************/
 void checkRow(char puzzValues[][9], char check[], int row, int column) {
-	
+  for (int j=0; j<9; j++)
+    check[ (int) puzzValues[row][j] ]++;
 }
 
 /******************** checkColumn **************************************
@@ -205,7 +231,8 @@ Notes:
     being checked.
 **************************************************************************/
 void checkColumn(char puzzValues[][9], char check[], int row, int column) {
-	
+  for (int i=0; i<9;i++)
+    check[ (int) puzzValues[i][column] ]++;
 }
 
 /******************** checkSquare **************************************
@@ -226,7 +253,13 @@ Notes:
     square, incrementing check[].
 **************************************************************************/
 void checkSquare(char puzzValues[][9], char check[], int row, int column) {
-	
+  /* puzzValues[x][y] = top left corner of box containing puzzValues[i][j] */
+  int x = row / 3 * 3;
+  int y = column / 3 * 3;
+
+  for(int i=x; i<x+3; i++)
+    for(int j=y; j<y+3; j++)
+      check[ (int) puzzValues[i][j] ]++;
 }
 
 /******************** printPossibleNums **************************************
