@@ -33,8 +33,20 @@ int main() {
 
   /* Allocate memory for array */
   Arr2D = (double **) malloc(X * sizeof(double *));
-  for (i = 0; i < X; i++)
+  if (Arr2D == NULL) {
+    printf("Failed to allocate memory. Exiting...\n");
+    return -1;
+  }
+  for (i = 0; i < X; i++) {
     Arr2D[i] = (double *) malloc(Y * sizeof(double));
+    if (Arr2D[i] == NULL) {
+      printf("Failed to allocate memory. Exiting...\n");
+      for(; i >= 0; i--)
+        free(Arr2D[i]);
+      free(Arr2D);
+      return -1;
+    }
+  }
 
   /* Assign each slot in array a random (or not) number */
   for (i = 0; i < X; i++) {
