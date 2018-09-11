@@ -169,6 +169,7 @@ Notes:
 void analyzePuzzle(char puzzValues[][9], char type, char check[]) {
   int i, j, k;
 
+  /* For each element in the puzzle */
   for(i=0; i<9; i++) {
     for (j=0; j<9; j++) {
       
@@ -208,7 +209,8 @@ Notes:
     being checked.
 **************************************************************************/
 void checkRow(char puzzValues[][9], char check[], int row, int column) {
-  for (int j=0; j<9; j++)
+  int j;
+  for (j=0; j<9; j++)
     check[ (int) puzzValues[row][j] ]++;
 }
 
@@ -228,7 +230,8 @@ Notes:
     being checked.
 **************************************************************************/
 void checkColumn(char puzzValues[][9], char check[], int row, int column) {
-  for (int i=0; i<9;i++)
+  int i;
+  for (i=0; i<9;i++)
     check[ (int) puzzValues[i][column] ]++;
 }
 
@@ -254,8 +257,10 @@ void checkSquare(char puzzValues[][9], char check[], int row, int column) {
   int x = row / 3 * 3;
   int y = column / 3 * 3;
 
-  for(int i=x; i<x+3; i++)
-    for(int j=y; j<y+3; j++)
+  /* For each element in the box, increment check[element] */
+  int i, j;
+  for(i=x; i<x+3; i++)
+    for(j=y; j<y+3; j++)
       check[ (int) puzzValues[i][j] ]++;
 }
 
@@ -279,13 +284,13 @@ void printPossibleNums(char puzzValues[][9], char check[], int row, int column) 
   printf("[%d][%d]:", row, column);
 
   /* If check[i] != 0, then i is not a valid solution for this square */
-  for(int k=1; k<10; k++)
+  int k;
+  for(k=1; k<10; k++)
     if(check[k] == 0)
       printf(" %d,", k);
 
   /* remove final comma and newline */
   printf("\b \n");
-
 }
 
 /******************** checkSolution **************************************
@@ -314,7 +319,10 @@ int checkSolution(char puzzValues[][9], char check[]) {
       checkColumn(puzzValues, check, i, j);
       checkSquare(puzzValues, check, i, j);
 
-      for (k=0; k<10; k++)
+      /* for every cell, every possibility should appear once in the
+       * row, once in the column, and once in the box. Thus, each slot
+       * in check should read 3 in a valid puzzle */
+      for (k=1; k<10; k++)
         if(3 < check[k] || check[k] > 3)
           return 1;
     }/* end for j */
