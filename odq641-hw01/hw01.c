@@ -15,6 +15,7 @@ Notes:
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h> /* for memset */
 
 void inputPuzzle(char puzzValues[][9], char *type, char *argv[]);
 void printPuzzle(char puzzValues[][9], char type);
@@ -26,6 +27,8 @@ void checkColumn(char puzzValues[][9], char check[], int row, int column);
 void checkSquare(char puzzValues[][9], char check[], int row, int column);
 void printPossibleNums(char puzzValues[][9], char check[], int row, int column);
 int checkSolution(char puzzValues[][9], char check[]);
+int checkSection(void (*checkFunction)(char[][9], char[],int, int),
+                   char puzzValues[][9], char check[], int row, int column);
 
 
 int main(int argc, char *argv[]) {
@@ -209,9 +212,15 @@ Notes:
     being checked.
 **************************************************************************/
 void checkRow(char puzzValues[][9], char check[], int row, int column) {
+  /* For each cell in this row */
   int j;
   for (j=0; j<9; j++)
-    check[ (int) puzzValues[row][j] ]++;
+    check[ puzzValues[row][j] ]++;
+  /* Note: If compiling with -Wall this yields a warning because
+   * of the possibility of negative indexing with the char type. However,
+   * this possibility is ruled out in the inputPuzzle function. The same
+   * goes for future check functions.
+   */
 }
 
 /******************** checkColumn **************************************
@@ -230,9 +239,10 @@ Notes:
     being checked.
 **************************************************************************/
 void checkColumn(char puzzValues[][9], char check[], int row, int column) {
+  /* For each cell in this column */
   int i;
   for (i=0; i<9;i++)
-    check[ (int) puzzValues[i][column] ]++;
+    check[ puzzValues[i][column] ]++;
 }
 
 /******************** checkSquare **************************************
@@ -257,11 +267,11 @@ void checkSquare(char puzzValues[][9], char check[], int row, int column) {
   int x = row / 3 * 3;
   int y = column / 3 * 3;
 
-  /* For each element in the box, increment check[element] */
+  /* For each cell in the box, increment check[cell] */
   int i, j;
   for(i=x; i<x+3; i++)
     for(j=y; j<y+3; j++)
-      check[ (int) puzzValues[i][j] ]++;
+      check[ puzzValues[i][j] ]++;
 }
 
 /******************** printPossibleNums **************************************
@@ -289,7 +299,7 @@ void printPossibleNums(char puzzValues[][9], char check[], int row, int column) 
     if(check[k] == 0)
       printf(" %d,", k);
 
-  /* remove final comma and newline */
+  /* replace final comma with a space and newline */
   printf("\b \n");
 }
 
@@ -306,27 +316,69 @@ Notes:
     The check[] array is used to identify if a solution is correct or not.
 **************************************************************************/
 int checkSolution(char puzzValues[][9], char check[]) {
-  int i, j, k;
-
-  for (i=0; i<9; i++) {
-    for (j=0; j<9; j++) {
-      /* 0 out check */
-      for (k=0; k<10; k++)
-        check[k] = 0;
-
-      /* Analyze surrounding cells for available values */
-      checkRow(puzzValues, check, i, j);
-      checkColumn(puzzValues, check, i, j);
-      checkSquare(puzzValues, check, i, j);
-
-      /* for every cell, every possibility should appear once in the
-       * row, once in the column, and once in the box. Thus, each slot
-       * in check should read 3 in a valid puzzle */
-      for (k=1; k<10; k++)
-        if(3 < check[k] || check[k] > 3)
-          return 1;
-    }/* end for j */
-  }/* end for i */
+  int i, j;
   
+  /* Check the squares */
+  for (i=0; i<=6; i+=3) {
+    for (j=0; j<=6; j+=3) {
+      /* 0 out check */
+      memset(check, 0, 10);
+
+      /* inventory square */
+      if (checkSection(checkSquare, puzzValues, check, 0, j))
+        return 1;
+    }/* end for j */
+  }/* end for j */
+
+  /* Check the rows */
+  for (i=0; i<9; i++) {
+    /* 0 out check */
+    memset(check, 0, 10);
+
+    /* inventory row */
+    if (checkSection(checkRow, puzzValues, check, 0, j))
+      return 1;
+  } /* end for i */
+
+  /* Check the columns */
+  for (j=0; j<9; j++) {
+    /* 0 out check */
+    memset(check, 0, 10);
+
+    /* inventory column */
+    if (checkSection(checkColumn, puzzValues, check, 0, j))
+      return 1;
+  } /* end for j */
   return 0;
 }
+
+/******************** checkSection ***************************************
+
+Purpose:
+    Checks a section (row, column, or square) for validity using 
+    sudoku rules.
+Parameters:
+    I 	void * 	checkFunction
+    I 	char 	puzzValues[][]
+    I   char    check[]
+    I   int     row
+    I   int     column
+Returns:
+    O - int 	0 = good solution, 1 = wrong solution
+Notes:
+    The check[] array is used to identify if a solution is correct or not.
+**************************************************************************/
+int checkSection(void (*checkFunction)(char[][9], char[], int, int),
+             char puzzValues[][9], char check[], int row, int column) {
+  /* starting at (row, column) analyze the appropriate section
+   * according to which checkFUnction is passed
+   */
+  checkFunction(puzzValues, check, row, column);
+  int k;
+  for (k=1; k<10; k++)
+    if (check[k] != 1)
+      return 0;
+
+  return 1;
+}
+
