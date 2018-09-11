@@ -4,7 +4,7 @@ Author:  Lee Reese
 Purpose:
     Accepts a finished or unfinished sudoku puzzle and returns a correct
     solution check or the possible values that could be entered into every
-    empty square.
+    empty cell.
 Parameters:
     arvg[1] 	name of sudoku file
 Returns:
@@ -157,7 +157,7 @@ void printPuzzle(char puzzValues[][9], char type) {
 void analyzePuzzle(char puzzValues[][9], char type, char check[])
 Purpose:
     Analyzes an unfinished puzzle to determine possible values for each
-    empty square.
+    empty cell.
 Parameters:
     I 	char 	puzzValues[][]
     I 	char 	type
@@ -199,7 +199,7 @@ void analyzePuzzle(char puzzValues[][9], char type, char check[]) {
 /******************** checkRow **************************************
 void checkRow(char puzzValues[][9], char check[], int row, int column)
 Purpose:
-    Checks the other elements in the row of the square being checked.
+    Checks the other elements in the row of the cell being checked.
 Parameters:
     I 	char 	puzzValues[][]
     I 	char 	check[]
@@ -208,7 +208,7 @@ Parameters:
 Returns:
     Increments values in check[] based on values found in the row.
 Notes:
-    int row and int column are the coordinates of the square currently
+    int row and int column are the coordinates of the cell currently
     being checked.
 **************************************************************************/
 void checkRow(char puzzValues[][9], char check[], int row, int column) {
@@ -226,7 +226,7 @@ void checkRow(char puzzValues[][9], char check[], int row, int column) {
 /******************** checkColumn **************************************
 void checkColumn(char puzzValues[][9], char check[], int row, int column)
 Purpose:
-    Checks the other elements in the column of the square being checked.
+    Checks the other elements in the column of the cell being checked.
 Parameters:
     I 	char 	puzzValues[][]
     I 	char 	check
@@ -235,7 +235,7 @@ Parameters:
 Returns:
     Increments values in check[] based on values found in the row.
 Notes:
-    int row and int column are the coordinates of the square currently
+    int row and int column are the coordinates of the cell currently
     being checked.
 **************************************************************************/
 void checkColumn(char puzzValues[][9], char check[], int row, int column) {
@@ -267,7 +267,7 @@ void checkSquare(char puzzValues[][9], char check[], int row, int column) {
   int x = row / 3 * 3;
   int y = column / 3 * 3;
 
-  /* For each cell in the box, increment check[cell] */
+  /* For each cell in the square, increment check[cell] */
   int i, j;
   for(i=x; i<x+3; i++)
     for(j=y; j<y+3; j++)
@@ -293,7 +293,7 @@ Notes:
 void printPossibleNums(char puzzValues[][9], char check[], int row, int column) {
   printf("[%d][%d]:", row, column);
 
-  /* If check[i] != 0, then i is not a valid solution for this square */
+  /* If check[i] != 0, then i is not a valid solution for this cell */
   int k;
   for(k=1; k<10; k++)
     if(check[k] == 0)
@@ -367,6 +367,7 @@ Returns:
     O - int 	0 = good solution, 1 = wrong solution
 Notes:
     The check[] array is used to identify if a solution is correct or not.
+    checkFunction can be any of: checkRow, checkColumn, checkSquare
 **************************************************************************/
 int checkSection(void (*checkFunction)(char[][9], char[], int, int),
              char puzzValues[][9], char check[], int row, int column) {
@@ -377,8 +378,8 @@ int checkSection(void (*checkFunction)(char[][9], char[], int, int),
   int k;
   for (k=1; k<10; k++)
     if (check[k] != 1)
-      return 0;
+      return 1;
 
-  return 1;
+  return 0;
 }
 
