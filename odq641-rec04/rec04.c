@@ -18,17 +18,17 @@ typedef struct Rect {
 
 void buildRect(RectT *, char *);
 int chk_overlap(RectT *, RectT *);
-int point_in_rect(RectT, PointT);
 
 int main() {
   RectT a, b;
   RectT *recs;
+  while (1) {
   
-  buildRect(&a, "a");
-  buildRect(&b, "b");
+    buildRect(&a, "a");
+    buildRect(&b, "b");
 
-  // printf("%lf %lf %lf %lf", a.location.x, a.location.y, a.height, a.width);
-printf( (chk_overlap(&a, &b)? "yes\n":"no\n" ) ); 
+    printf( (chk_overlap(&a, &b)? "not overlapping\n":"overlapping\n" ) );
+  }
 
   return 0;
 }
@@ -44,51 +44,28 @@ void buildRect(RectT *pRect, char *name) {
   scanf("%lf %lf", &pRect->height, &pRect->width);
 }
 
-int point_in_rect(RectT r, PointT p) {
-  /* Establish bottom left and top right points on r */
-  PointT bottom_left = r.location;
-  PointT top_right;
-  top_right.x = bottom_left.x + r.width;
-  top_right.y = bottom_left.y + r.height;
-
-  /* Determine if p is within the vertical lines of r */
-  int bounded_in_x = 0;
-  if (bottom_left.x < p.x && p.x < top_right.x)
-    bounded_in_x = 1;
- 
-  /* Determine if p is within the horizontal lines of r */
-  int bounded_in_y = 0;
-  if (bottom_left.y < p.y && p.y < top_right.y)
-    bounded_in_y = 1;
-
-  return bounded_in_x && bounded_in_y;  
-}
-
 /* check any corners on r2 lie within r1, going clockwise from
  * bottom left
  */
 int chk_overlap(RectT *r1, RectT *r2) {
-  PointT corner;
-
-  /* Bottom left */
-  corner.x = r2->location.x;
-  corner.y = r2->location.y;
-  if (point_in_rect(*r1, corner))
-    return 1;
+  /* establish points for bottom left (bl) and top right (tr) of r1 */
+  PointT r1_bl = r1->location;
+  PointT r1_tr = r1->location;
+  r1_tr.x += r1->width;
+  r1_tr.y += r1->height;
   
-  /* Top left */
-  corner.y += r2->height;
-  if (point_in_rect(*r1, corner))
+  /* similarly, for r2 */
+  PointT r2_bl = r2->location;
+  PointT r2_tr = r2->location;
+  r2_tr.x += r2->width;
+  r2_tr.y += r2->height;
+
+  /* Check if r1 is to the right of r2 OR r1 is to the left of r2 */
+  if (r1_bl.x > r2_tr.x || r1_tr.x < r2_bl.x)
     return 1;
 
-  /* Top right */
-  corner.x += r2->width;
-  if (point_in_rect(*r1, corner))
-    return 1;
-
-  /* Bottom right */
-  corner.y -= r2->height;
-  if (point_in_rect(*r1, corner))
+  /* Check if r1 is above r2 OR r1 is below r2 */
+  if (r1_bl.y > r2_tr.y || r1_tr.y < r2_bl.y)
     return 1;
 
   return 0;
