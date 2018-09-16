@@ -48,21 +48,19 @@ int main() {
     buildRandomRect(&recs[i]);
 
   /* For each RectT in recs, check for overlapping with user RectTs */
-  int over_a, over_b, over_both;
+  int over_a=0, over_b=0, over_both=0;
   for(i=0; i<50; i++) {
-    /* establish where recs[i] is overlapping */
-    over_a = chk_overlap(&recs[i], &a);
-    over_b = chk_overlap(&recs[i], &b);
-    over_both = over_a && over_b;
-
-    /* print results */
-    
+    if(chk_overlap(&recs[i], &a))
+      over_a++;
+    if (chk_overlap(&recs[i], &b))
+      over_b++;
+    if(chk_overlap(&recs[i], &a) && chk_overlap(&recs[i], &b))
+       over_both++;
   }
-    
+
+  /* Print results */
   
 
-  printf( (chk_overlap(&a, &b)? "overlapping\n":"not overlapping\n" ) );
-  
   return 0;
 }
 
