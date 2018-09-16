@@ -59,8 +59,11 @@ int main() {
   }
 
   /* Print results */
+  printf("For each random rectangle,\n");
+  printf("%2d overlapped with a\n", over_a);
+  printf("%2d overlapped with b\n", over_b);
+  printf("%2d overlapped with both\n", over_both);
   
-
   return 0;
 }
 
@@ -77,10 +80,10 @@ void buildUserRect(RectT *pRect, char *name) {
 
 void buildRandomRect(RectT *pRect) {
   /* Bounds for random attributs of pRect */
-  int point_low = -100;
-  int point_high = 100;
+  int point_low = 0;
+  int point_high = 50;
   int dim_low = 0;
-  int dim_high = 30;
+  int dim_high = 15;
 
   pRect->location.x = randomReal(point_low, point_high);
   pRect->location.y = randomReal(point_low, point_high);
