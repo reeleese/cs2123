@@ -63,6 +63,8 @@ int main() {
   printf("%2d overlapped with a\n", over_a);
   printf("%2d overlapped with b\n", over_b);
   printf("%2d overlapped with both\n", over_both);
+
+  free(recs);
   
   return 0;
 }
