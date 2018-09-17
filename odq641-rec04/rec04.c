@@ -24,12 +24,12 @@ int chk_overlap(RectT *, RectT *);
 double randomReal(double low, double high);
 
 int main() {
-  /* Seed RNG */
-  srand( time(NULL) );
-
-  
+  int i;
   RectT a, b;
   RectT *recs;
+
+  /* Seed RNG */
+  srand( time(NULL) );
   
   /* Build user's rectangles */  
   buildUserRect(&a, "a");
@@ -43,11 +43,11 @@ int main() {
   }
 
   /* Initialize recs */
-  int i;
   for(i=0; i<50; i++)
     buildRandomRect(&recs[i]);
 
-  /* For each RectT in recs, check for overlapping with user RectTs */
+  /* For each RectT in recs, check for overlapping with user RectTs
+   * and accumulate total overlaps */
   int over_a=0, over_b=0, over_both=0;
   for(i=0; i<50; i++) {
     if(chk_overlap(&recs[i], &a))
@@ -69,17 +69,31 @@ int main() {
   return 0;
 }
 
-/* #TODO: make this easier for the user */
+/******************************** buildUserRect ********************************
+ * Prompts user to declare attributes for some rectangle name
+ ******************************************************************************/
 void buildUserRect(RectT *pRect, char *name) {
   /* Fill location */
-  printf("Enter coordinates for %s.\n> ", name);
-  scanf("%lf %lf", &pRect->location.x, &pRect->location.y);
+  printf("Enter coordinates for %s.\n", name);
+  printf("x: ");
+  scanf("%lf", &pRect->location.x);
+  printf("y: ");
+  scanf("%lf", &pRect->location.y);
 
   /* Fill height and width */
-  printf("Enter height and width for %s.\n> ", name);
-  scanf("%lf %lf", &pRect->height, &pRect->width);
+  printf("Enter height and width for %s.\n", name);
+  printf("height: ");
+  scanf("%lf", &pRect->height);
+  printf("width: ");
+  scanf("%lf", &pRect->width);
 }
 
+/******************************* buildRandomRect *******************************
+ * Fills location, height, and width attributes for some 
+ * rectangle pointer pRect. 
+ * location.x and location.y are in [0, 50]
+ * dimensions height and width are in [0, 15].
+ ******************************************************************************/
 void buildRandomRect(RectT *pRect) {
   /* Bounds for random attributs of pRect */
   int point_low = 0;
@@ -93,9 +107,12 @@ void buildRandomRect(RectT *pRect) {
   pRect->width = randomReal(dim_low, dim_high);
 }
 
-/* check any corners on r2 lie within r1, going clockwise from
- * bottom left
- */
+/******************************** chk_overlap **********************************
+ * Given two rectangle pointers r1 and r2, determines if these
+ * rectanlges overlap by checking if r1 is completely above,
+ * below, to the left, or to the right of r2. Returns 1 if
+ * overlapping, and 0 if not overlapping.
+ ******************************************************************************/
 int chk_overlap(RectT *r1, RectT *r2) {
   /* establish points for bottom left (bl) and top right (tr) of r1 */
   PointT r1_bl = r1->location;
@@ -120,6 +137,9 @@ int chk_overlap(RectT *r1, RectT *r2) {
   return 1;
 }
 
+/********************************* randomReal *********************************
+ * Returns a random double in [low, high]
+ ******************************************************************************/
 double randomReal(double low, double high){
   double d;
   d = (double) rand() / ((double) RAND_MAX + 1);
