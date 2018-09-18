@@ -1,12 +1,14 @@
 all: client
+
 tidy:
 	rm -f *.o *~ a.out
+	rm -rf *.dSYM
 
 # compiler flags:
 # -g add debug info to executable
 # -Wall turn on most warning flags
 # -o
-CC = clang
+CC = gcc
 CFLAGS = -g -Wall
 
 # C Compilations
