@@ -16,11 +16,13 @@ int main(int argc, char *argv[]) {
   int prevEvent, currEvent, numTasks;
   int days, maxDays, totalDays=0;
 
+  /* Ensure correct # of args passed */
   if (argc != 5)
     printf("Incorrect number of arguments.\n");
 
+  /* Open infp and oufp */
   if (!openCritPathInfo(&infp, &outfp, argv)) {
-    printf("Failed to open file(s). Exiting...\n");
+    printf("Exiting...\n");
     return -1;
   }
   
@@ -55,21 +57,42 @@ int main(int argc, char *argv[]) {
 }
 
 int openCritPathInfo(FILE **in, FILE **out, char *argv[]) {
-  /* Currently only accupting -input then -output.
-   * #TODO: make this more general */
-  if (!strcmp(argv[1], "-input") && !strcmp(argv[3], "-output")) {
-    *in = fopen(argv[2], "r");
-    if (*in == NULL) {
-      printf("File could not be open\n");
-      return 0;
-    }
+  char *inputFilename, *outputFilename;
 
-    *out = fopen(argv[4], "w");
-    if (*out == NULL) {
-      printf("File could not be open\n");
-      return 0;
-    }
+  /* CASE 1: The first file is input and the second is output. */
+  if (strcmp(argv[1], "-input")==0 && strcmp(argv[3], "-output")==0) {
+    inputFilename = argv[2];
+    outputFilename = argv[4];
   }
+
+  /* CASE 2: The first file is output and the second is input. */
+  else if (strcmp(argv[1], "-output")==0 && strcmp(argv[3], "-input")==0) {
+    inputFilename = argv[4];
+    outputFilename = argv[2];
+  }
+
+  /* CASE 3: Nothing is correct */
+  else {
+    printf("BAD INPUT: To properly run this program, type\n");
+    printf("  rec05 –input data1.txt –output output1.txt OR\n");
+    printf("  rec05 –output output1.txt –input data1.txt\n");
+    return 0;
+  }
+
+  /* Build input file pointer */
+  *in = fopen(inputFilename, "r");
+  if (*in == NULL) {
+    printf("File could not be open.\n");
+    return 0;
+  }
+
+  /* Build ouput file pointer */
+  *out = fopen(outputFilename, "w");
+  if (*out == NULL) {
+    printf("File could not be open.\n");
+    return 0;
+  }
+ 
   
   return 1;
 }
