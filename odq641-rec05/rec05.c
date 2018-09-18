@@ -6,13 +6,16 @@
 #include <stdio.h>
 #include <string.h>
 
+void printFileHeader(FILE *);
+
 int main(int argc, char *argv[]) {
   FILE *infp=NULL, *outfp=NULL;
-  int prevEvent, currEvent, numTasks, days, maxDays;
+  int prevEvent, currEvent, numTasks;
+  int days, maxDays, totalDays;
 
   /* Currently only accupting -input then output.
    * #TODO: make this more general */
-  if (strcmp(argv[1], "-input") && strcmp(argv[3], "-output")) {
+  if (!strcmp(argv[1], "-input") && !strcmp(argv[3], "-output")) {
     infp = fopen(argv[2], "r");
     if (infp == NULL) {
       printf("File could not be open\n");
@@ -27,23 +30,33 @@ int main(int argc, char *argv[]) {
   }/* end if */
 
   /* Prime loop */
-  fscanf(infp, "%d %d %d", &prevEvent, &numTasks, &days);
-
+  printFileHeader(outfp);
+  fscanf(infp, "%d %*d %d", &prevEvent, &days);
+  numTasks = 1;
+ 
   /* Loop */
-  while(fscanf(infp, "%d %d %d", &currEvent, &numTasks, &days)) {
+  while(fscanf(infp, "%d %*d %d", &currEvent, &days) == 2) {
     if (prevEvent != currEvent) {
-      fprintf(outfp, "%5d %5d %5d", prevEvent, numTasks, maxDays);
+      fprintf(outfp, "%-7d %-14d %-d\n", prevEvent, numTasks, maxDays);
       numTasks = 0;
       maxDays = 0;
     }
-    currEvent = prevEvent;
+    printf("made it\n");
+    prevEvent = currEvent;
     numTasks++;
     if (days > maxDays)
       maxDays = days;
   }
-
+ 
   /* Offload loop */
-  fprintf(outfp, "%5d %5d %5d", currEvent, numTasks, maxDays);
+  fprintf(outfp, "%-7d %-14d %-d\n", currEvent, numTasks, maxDays);
   
   return 0;
+}
+
+void printFileHeader(FILE *out) {
+  fprintf(out, "Project Complettion Timetable\n");
+  fprintf(out, "------------------------------------------------\n");
+  fprintf(out, "Event   Num of Tasks   Max Num of Tasks\n");
+  fprintf(out, "------  ------         ------\n");
 }
