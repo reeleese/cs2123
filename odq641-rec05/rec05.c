@@ -1,6 +1,7 @@
 /*      Author: Lee Reese
  *          ID: odq641
  *  Assignment: Recitation 5 DUE: Monday 9/24
+ *  Depends on: rec05print.h, rec05print.c
  */
 
 #include <stdio.h>
