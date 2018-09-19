@@ -27,9 +27,10 @@ int main(int argc, char *argv[]) {
   /* Write the header */
   printHeader(outfp);
 
-  /* In order to compare current data with the preceding entry,
-   * we're gonna need the values from entry 1 */
+  /* In order to compare task 2 with it's preceding task,
+   * we're gonna need the values for task 1 */
   if (fscanf(infp, "%d %*d %d", &prevEvent, &days) == 2) {
+    maxDays = days;
     numTasks = 1;
   } else { /* There are no entries */
     printFooter(outfp, 0);
@@ -37,7 +38,7 @@ int main(int argc, char *argv[]) {
   }
     
 
-  /* For each task, starting with the second */
+  /* For each task, starting with task 2 */
   while(fscanf(infp, "%d %*d %d", &currEvent, &days) == 2) {
     /* If new event, dump data for previous event and reset accumulators */
     if (prevEvent != currEvent) {
@@ -53,7 +54,7 @@ int main(int argc, char *argv[]) {
   }
  
   /* Dump the final event */
-  printEvent(outfp, currEvent, numTasks, maxDays);
+  printEvent(outfp, prevEvent, numTasks, maxDays);
 
   /* Write the footer */
   totalDays += maxDays;
