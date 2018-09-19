@@ -9,8 +9,8 @@
 
 int main(int argc, char *argv[]) {
   FILE *infp=NULL, *outfp=NULL;
-  int prevEvent, currEvent=3, numTasks;
-  int days, maxDays, totalDays=0;
+  int prevEvent, currEvent, numTasks;
+  int days, maxDays=0, totalDays=0;
 
   /* Ensure correct # of args passed */
   if (argc != 5) {
@@ -24,12 +24,18 @@ int main(int argc, char *argv[]) {
     return -1;
   }
 
+  /* Write the header */
   printHeader(outfp);
 
   /* In order to compare current data with the preceding entry,
    * we're gonna need the values from entry 1 */
-  fscanf(infp, "%d %*d %d", &prevEvent, &days);
-  numTasks = 1;
+  if (fscanf(infp, "%d %*d %d", &prevEvent, &days) == 2) {
+    numTasks = 1;
+  } else { /* There are no entries */
+    printFooter(outfp, 0);
+    return 0;
+  }
+    
 
   /* For each task, starting with the second */
   while(fscanf(infp, "%d %*d %d", &currEvent, &days) == 2) {

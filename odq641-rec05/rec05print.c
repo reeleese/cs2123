@@ -3,20 +3,14 @@
 int openCritPathInfo(FILE **in, FILE **out, char *argv[]) {
   char *inputFilename, *outputFilename;
 
-  /* CASE 1: The first file is input and the second is output. */
+  /* Assign input and ouput file names */
   if (strcmp(argv[1], "-input")==0 && strcmp(argv[3], "-output")==0) {
     inputFilename = argv[2];
     outputFilename = argv[4];
-  }
-
-  /* CASE 2: The first file is output and the second is input. */
-  else if (strcmp(argv[1], "-output")==0 && strcmp(argv[3], "-input")==0) {
+  } else if (strcmp(argv[1], "-output")==0 && strcmp(argv[3], "-input")==0) {
     inputFilename = argv[4];
     outputFilename = argv[2];
-  }
-
-  /* CASE 3: Nothing is correct */
-  else {
+  } else { /* User gives bad input */
     printf("BAD INPUT: To properly run this program, type\n");
     printf("  rec05 –input <your input file> –output <your output file> OR\n");
     printf("  rec05 –output <your output file> –input <your input file>\n");
