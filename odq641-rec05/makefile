@@ -7,9 +7,8 @@ tidy:
 # compiler flags:
 # -g add debug info to executable
 # -Wall turn on most warning flags
-# -o
 CC = gcc
-CFLAGS = -g -Wall
+CFLAGS = -Wall
 
 # C Compilations
 rec05.o: rec05.c rec05print.h

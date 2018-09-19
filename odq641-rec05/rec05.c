@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
   if (fscanf(infp, "%d %*d %d", &prevEvent, &days) == 2) {
     maxDays = days;
     numTasks = 1;
-  } else { /* There are no entries */
+  } else { /* There is no task 1. No tasks at all as a matter of fact */
     printFooter(outfp, 0);
     return 0;
   }
@@ -60,6 +60,7 @@ int main(int argc, char *argv[]) {
   totalDays += maxDays;
   printFooter(outfp, totalDays);
 
+  /* Close our file pointers */
   fclose(infp);
   fclose(outfp);
   

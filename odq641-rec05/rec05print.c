@@ -18,15 +18,13 @@ int openCritPathInfo(FILE **in, FILE **out, char *argv[]) {
   }
 
   /* Build input file pointer */
-  *in = fopen(inputFilename, "r");
-  if (*in == NULL) {
+  if ((*in = fopen(inputFilename, "r")) == NULL) {
     printf("File could not be open.\n");
     return 0;
   }
 
   /* Build ouput file pointer */
-  *out = fopen(outputFilename, "w");
-  if (*out == NULL) {
+  if ((*out = fopen(outputFilename, "w")) == NULL) {
     printf("File could not be open.\n");
     return 0;
   }
