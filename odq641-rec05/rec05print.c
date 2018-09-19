@@ -18,8 +18,8 @@ int openCritPathInfo(FILE **in, FILE **out, char *argv[]) {
   /* CASE 3: Nothing is correct */
   else {
     printf("BAD INPUT: To properly run this program, type\n");
-    printf("  rec05 –input data1.txt –output output1.txt OR\n");
-    printf("  rec05 –output output1.txt –input data1.txt\n");
+    printf("  rec05 –input <your input file> –output <your output file> OR\n");
+    printf("  rec05 –output <your output file> –input <your input file>\n");
     return 0;
   }
 
