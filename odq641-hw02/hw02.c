@@ -37,15 +37,19 @@ int main(int argc, char *argv[]) {
   scheduleT *oldSchedule, *newSchedule;
   int numOfTimeSlots = -1;
   FILE *inFile;
+
+  /* check that file was received */
   if(argc<2){
     printf("Enter the input file as the second command line argument\n");
     return -1;
   }
-  inFile = fopen(argv[1], "r");
-  if(inFile == NULL){
+
+  /* open file */  
+  if((inFile = fopen(argv[1], "r")) == NULL){
     printf("file not found or no permissions\n");
     return -1;
   }
+  
   oldSchedule = LoadSchedule(inFile, &numOfTimeSlots);	
   fclose(inFile);
   PrintSchedule(oldSchedule, numOfTimeSlots);
@@ -85,7 +89,7 @@ scheduleT *LoadSchedule(FILE *inFile, int *numTS){
            &newSch[i].numc);
     
     newSch[i].courses=(courseT*)malloc(newSch[i].numc * sizeof(courseT));
-    if(newSch[i] == NULL){
+    if (newSch[i].courses == NULL){
       printf("courses malloc error\n");
       for(j = 0; j < i; j++)  
         free(newSch[i].courses);

@@ -1,6 +1,5 @@
 # Makefile for programs for Homework 2
-# fName lName abc123
-# replace all abc123 in this file with your own 
+# Lee Reese odq641 
 # ***************************************************************
 
 PROGRAMS = \
@@ -9,10 +8,8 @@ PROGRAMS = \
 # ***************************************************************
 # Parameters to control Makefile operation
 # Note that the gccx command script must be defined
-
-#CC = gccx
-#gcc -Wall -g -o prog prog.c  
-CC = gcc
+  
+CC = clang
 CFLAGS = -Wall -g
 
 # ***************************************************************
