@@ -182,8 +182,26 @@ scheduleT *CopySchedule(scheduleT *oldSch, int numTS){
 void PrintInstructorConflicts(scheduleT *sch, int numTS)
 {
   int i,j,k;
+  char* inst1, inst2;
 
   /* YOUR CODE */
+  for (i=0; i < numTS; i++)
+    for (j=0; j<sch[i].numc; j++)
+      for (k=j+1; k<sch[i].numc; k++) {
+        /* if inst1 == inst2, print conflict */
+        if (strcmp(sch[i].courses[j].inst, sch[i].courses[k].inst) == 0) {
+          printf("!!!Instructor Consflict!!!\n");
+          printf("Course\tInstructor\tRoom\n");
+          printf("%s\t%s\t\t%s\n",
+                 sch[i].courses[j].code,
+                 sch[i].courses[j].inst,
+                 sch[i].courses[j].room);
+          printf("%s\t%s\t\t%s\n",
+                 sch[i].courses[k].code,
+                 sch[i].courses[k].inst,
+                 sch[i].courses[k].room);
+        }/* if conflict */
+      }/* for k */
 }
 
 /* iterate through schedule to find all classrooms that have
