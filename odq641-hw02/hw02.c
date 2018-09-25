@@ -49,7 +49,8 @@ int main(int argc, char *argv[]) {
     printf("file not found or no permissions\n");
     return -1;
   }
-  
+
+  /* load schedule in and print result to console */
   oldSchedule = LoadSchedule(inFile, &numOfTimeSlots);	
   fclose(inFile);
   PrintSchedule(oldSchedule, numOfTimeSlots);
@@ -150,6 +151,27 @@ scheduleT *CopySchedule(scheduleT *oldSch, int numTS){
  
   /* YOUR CODE */
 
+  /* Allocate newSch */
+  newSch = (scheduleT *) malloc(numTS * sizeof(scheduleT));
+  if (newSch == NULL) {
+    printf("ERROR: Failed to copy schedule.\n");
+    return NULL;
+  }
+
+  /* for each scheduleT in oldSch, copy fields to each newSch */
+  for (i=0; i<numTS; ++i) {
+    strcpy(newSch[i].start, oldSch[i].start);
+    strcpy(newSch[i].end, oldSch[i].end);
+    newSch[i].numc = oldSch[i].numc;
+    newSch[i].courses = (courseT*) malloc(newSch[i].numc * sizeof(courseT));
+
+    /* for each courseT in oldSch[i].courses copy elements to 
+     * newSch[i].courses */
+    for (j=0; j<oldSch[i].numc; ++j) {
+      newSch[i].courses[j] = oldSch[i].courses[j];
+    }/* for j */
+  }/* for i */
+  
   return newSch;
 }
 
