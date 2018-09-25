@@ -8,8 +8,8 @@ PROGRAMS = \
 # ***************************************************************
 # Parameters to control Makefile operation
 # Note that the gccx command script must be defined
-  
-CC = clang
+
+CC = gcc
 CFLAGS = -Wall -g
 
 # ***************************************************************

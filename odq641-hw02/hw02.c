@@ -184,13 +184,15 @@ void PrintInstructorConflicts(scheduleT *sch, int numTS)
   int i,j,k;
 
   /* YOUR CODE */
+
+  /* for each course in a timeslot, compare its instructor 
+   * with those of its successors, checking for duplicates */
   for (i=0; i < numTS; i++)
-    for (j=0; j<sch[i].numc; j++)
-      for (k=j+1; k<sch[i].numc; k++) {
-        /* if inst1 == inst2, print conflict */
+    for (j=0; j<sch[i].numc-1; j++)
+      for (k=j+1; k<sch[i].numc; k++) {   
         if (strcmp(sch[i].courses[j].inst, sch[i].courses[k].inst) == 0) {
           printf("!!!Instructor Conflict!!!\n");
-          printf("Course\tInstructor\tRoom\n");
+          printf("%s\t%s\n", sch[i].start, sch[i].end);
           printf("%s\t%s\t\t%s\n",
                  sch[i].courses[j].code,
                  sch[i].courses[j].inst,
@@ -199,7 +201,7 @@ void PrintInstructorConflicts(scheduleT *sch, int numTS)
                  sch[i].courses[k].code,
                  sch[i].courses[k].inst,
                  sch[i].courses[k].room);
-        }/* if conflict */
+        }/* if */
       }/* for k */
 }
 
@@ -211,13 +213,16 @@ void PrintRoomConflict(scheduleT *sch, int numTS)
   int i,j,k;
 
   /* YOUR CODE */
+
+  /* for each course in a timeslot, compare its room with
+   * those of its successors, checking for duplicates */
   for (i=0; i < numTS; i++)
-    for (j=0; j<sch[i].numc; j++)
+    for (j=0; j<sch[i].numc-1; j++)
       for (k=j+1; k<sch[i].numc; k++) {
         /* if inst1 == inst2, print conflict */
         if (strcmp(sch[i].courses[j].room, sch[i].courses[k].room) == 0) {
           printf("!!!Room Conflict!!!\n");
-          printf("Course\tInstructor\tRoom\n");
+          printf("%s\t%s\n", sch[i].start, sch[i].end);
           printf("%s\t%s\t\t%s\n",
                  sch[i].courses[j].code,
                  sch[i].courses[j].inst,
@@ -226,7 +231,7 @@ void PrintRoomConflict(scheduleT *sch, int numTS)
                  sch[i].courses[k].code,
                  sch[i].courses[k].inst,
                  sch[i].courses[k].room);
-        }/* if conflict */
+        }/* if  */
       }/* for k */
 }
 
