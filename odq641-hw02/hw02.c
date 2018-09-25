@@ -65,7 +65,7 @@ int main(int argc, char *argv[]) {
   PrintInstructorConflicts(oldSchedule, numOfTimeSlots);
 
   PrintRoomConflict(oldSchedule, numOfTimeSlots);
-
+  
   FreeSchedule(oldSchedule, numOfTimeSlots);
   FreeSchedule(newSchedule, numOfTimeSlots);
 
@@ -234,6 +234,11 @@ void PrintRoomConflict(scheduleT *sch, int numTS)
 /* free the given schedule structure */
 void FreeSchedule(scheduleT *sch, int numTS)
 {
+  int i;
+  
   /* YOUR CODE */
+  for (i=0; i<numTS; i++)
+    free(sch[i].courses);
+  free(sch);
 }
 
