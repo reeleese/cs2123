@@ -18,8 +18,8 @@ int main()
 
   storeDigits(digit, digits);
   int i;
-  for (i=0; i<4; i++)
-    printf("%d\n", digits[i]);
+  for (i=1000; i<10000; i+=100)
+    printf("%4d: %d\n", i, digitsUnique(i));
   
   return 0;
 }
@@ -27,8 +27,14 @@ int main()
 /* Determines if the digits in a 4-digit integer are unique */
 int digitsUnique(int num)
 {
+  int digits[4];
+  storeDigits(num, digits);
 
-  return -1;
+  int i, j;
+  for (i=0; i<3; i++)
+    for (j=i+1; j<4; j++)
+      if (digits[i] == digits[j]) return 0;
+  return 1;
 }
 
 /* Sores the digits of int in [1000, 9999] in an array of size 4
