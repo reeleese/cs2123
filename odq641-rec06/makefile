@@ -18,5 +18,5 @@ random.o: random.c random.h
 	$(CC) -c random.c
 
 # Executables
-rec06: rec05.o rec05print.o
-	$(CC) $(CFLAGS) -o rec05 rec05.o rec05print.o
+rec06: rec06.o random.o
+	$(CC) $(CFLAGS) -o rec06 rec06.o random.o
