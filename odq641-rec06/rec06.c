@@ -11,7 +11,7 @@ void storeDigits(int, int[]);
 int secretGen();
 int digitsInPlace(int[], int[]);
 int matchingDigits(int[], int[]);
-void fancyPrint(char *suffix, int quantity);
+void fancyPrint(int, char *);
 
 int main()
 {
@@ -19,6 +19,7 @@ int main()
 
   int i, guess, secret;
   int s_digits[4], g_digits[4];
+  int d_matching, d_inPlace, d_outPlace;
   
   secret = secretGen();
   
@@ -31,8 +32,17 @@ int main()
       printf("Please enter a value without repeated digits: ");
       scanf("%d", &guess);
     }
+    
     storeDigits(secret, s_digits);
     storeDigits(guess, g_digits);
+
+    d_matching = matchingDigits(s_digits, g_digits);
+    d_inPlace = digitsInPlace(s_digits, g_digits);
+    d_outPlace = d_matching - d_inPlace;
+
+    fancyPrint(d_inPlace, "in place");
+    fancyPrint(d_outPlace, "out of place");
+    fancyPrint(4-d_matching, "not existing");
     
     printf("\n");
   }
@@ -82,15 +92,18 @@ int digitsInPlace(int s_digits[4], int g_digits[4])
   return correct;
 }
 
+/* returns number of digits in g_digits that appear in s_digits */
 int matchingDigits(int s_digits[4], int g_digits[4])
 {
   int i, j, matching=0;
   for (i=0; i<4; ++i)
     for (j=0; j<4; ++j)
       if (s_digits[i] == g_digits[j])  ++matching;
+  return matching;
 }
 
-void fancyPrint(char *suffix, int quantity)
+/* prints "digits/digit are/is <suffix>" with good grammar */
+void fancyPrint(int quantity, char *suffix)
 {
   if (quantity == 1)
     printf("1 digit is %s\n", suffix);
