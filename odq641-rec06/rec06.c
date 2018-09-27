@@ -11,6 +11,7 @@ void storeDigits(int, int[]);
 int secretGen();
 int digitsInPlace(int[], int[]);
 int matchingDigits(int[], int[]);
+void fancyPrint(char *suffix, int quantity);
 
 int main()
 {
@@ -87,4 +88,12 @@ int matchingDigits(int s_digits[4], int g_digits[4])
   for (i=0; i<4; ++i)
     for (j=0; j<4; ++j)
       if (s_digits[i] == g_digits[j])  ++matching;
+}
+
+void fancyPrint(char *suffix, int quantity)
+{
+  if (quantity == 1)
+    printf("1 digit is %s\n", suffix);
+  else
+    printf("%d digits are %s\n", quantity, suffix);
 }
