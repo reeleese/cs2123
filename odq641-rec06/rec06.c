@@ -21,37 +21,55 @@ int main()
   int attempt, guess, secret;
   int s_digits[4], g_digits[4];
   int d_matching, d_notExist, d_inPlace, d_outPlace;
-  
-  /* Get a secret value for user to guess */
-  secret = secretGen();
-  storeDigits(secret, s_digits);
-  
-  for (attempt=1; attempt<=40; ++attempt) {
-    /* Menu */
-    printf("(debug) Secret: %d\n", secret); 
-    printf("\nAttempt #%-2d\nEnter a 4-digit number: ", attempt);
-    scanf("%d", &guess);
+  char playAgain;
 
-    /* Ensure user's digits are uniquee */
-    while(!digitsUnique(guess)) {
-      printf("Please enter a value without repeated digits: ");
+  /* Play a game */
+  int playing = 1;
+  while (playing) {
+    /* Get a secret value for user to guess */
+    secret = secretGen();
+    storeDigits(secret, s_digits);
+    
+    /* Play a round */
+    for (attempt=1; attempt<=40; ++attempt) {
+      /* Menu */
+      printf("\nAttempt #%-2d\nEnter a 4-digit number: ", attempt);
       scanf("%d", &guess);
-    }
 
-    /* store guess in array */
-    storeDigits(guess, g_digits);
+      /* Ensure user's digits are uniquee */
+      while(!digitsUnique(guess)) {
+        printf("Please enter a value without repeated digits: ");
+        scanf("%d", &guess);
+      }
 
-    /* How good is the user's guess? */
-    d_matching = matchingDigits(s_digits, g_digits);
-    d_notExist = 4-d_matching;
-    d_inPlace = digitsInPlace(s_digits, g_digits);
-    d_outPlace = d_matching - d_inPlace;
+      /* Did the user win? */
+      if (secret == guess) {
+        printf("You did it! The number was %d.\n", secret);
+        break;
+      }
+        
 
-    /* Print results of guess */
-    positionPrint(d_inPlace, "in place");
-    positionPrint(d_outPlace, "out of place");
-    existencePrint(d_notExist);
-  }
+      /* store guess in array */
+      storeDigits(guess, g_digits);
+
+      /* How good is the user's guess? */
+      d_matching = matchingDigits(s_digits, g_digits);
+      d_notExist = 4-d_matching;
+      d_inPlace = digitsInPlace(s_digits, g_digits);
+      d_outPlace = d_matching - d_inPlace;
+
+      /* Print results of guess */
+      positionPrint(d_inPlace, "in place");
+      positionPrint(d_outPlace, "out of place");
+      existencePrint(d_notExist);
+    }/* end round */
+    
+    /* Determine whether the user will play again */
+    printf("Play again? (y/n): ");
+    scanf(" %c", &playAgain);
+    if (playAgain == 'n' || playAgain == 'N')
+      playing = 0;
+  }/* end game */
 
   return 0;
 }
