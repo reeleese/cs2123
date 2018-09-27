@@ -9,7 +9,8 @@
 int digitsUnique(int);
 void storeDigits(int, int[]);
 int secretGen();
-int getDigitsInPlace(int[], int[]);
+int digitsInPlace(int[], int[]);
+int matchingDigits(int[], int[]);
 
 int main()
 {
@@ -70,7 +71,7 @@ int secretGen()
 }
 
 /* Determines how many digits are placed correctly */
-int getDigitsInPlace(int s_digits[4], int g_digits[4])
+int digitsInPlace(int s_digits[4], int g_digits[4])
 {
   int i, correct = 0;
   for(i=0; i<4; i++)
@@ -78,4 +79,12 @@ int getDigitsInPlace(int s_digits[4], int g_digits[4])
       correct++;
 
   return correct;
+}
+
+int matchingDigits(int s_digits[4], int g_digits[4])
+{
+  int i, j, matching=0;
+  for (i=0; i<4; ++i)
+    for (j=0; j<4; ++j)
+      if (s_digits[i] == g_digits[j])  ++matching;
 }
