@@ -8,19 +8,33 @@
 
 int digitsUnique(int);
 void storeDigits(int, int[]);
+int secretGen();
+int getDigitsInPlace(int, int);
 
 int main()
 {
   Randomize();
 
-  int digit = 1234;
-  int digits[4];
-
-  storeDigits(digit, digits);
-  int i;
-  for (i=1000; i<10000; i+=100)
-    printf("%4d: %d\n", i, digitsUnique(i));
+  int i, guess, secret, inPlace;
   
+  secret = secretGen();
+  
+  for (i=0; i<40; i++) {
+    printf("(debug) Secret: %d\n", secret); 
+    printf("Enter a 4-digit number: ");
+    scanf("%d", &guess);
+    
+    while(!digitsUnique(guess)) {
+      printf("Please enter a value without repeated digits: ");
+      scanf("%d", &guess);
+    }
+    inPlace  = getDigitsInPlace(secret, guess);
+    
+    printf("  %d digits in place\n", inPlace);
+    printf("  %d digits out of place\n", 4-inPlace);
+    printf("\n");
+  }
+
   return 0;
 }
 
@@ -44,4 +58,28 @@ void storeDigits(int num, int digits[])
   int i, *digit=digits;
   for (i=1; i<=1000; i*=10)
     *digit++ = (num / i) % 10;
+}
+
+/* Generates a random integer in [1000, 9999] with non-repeating digits */
+int secretGen()
+{
+  int secret = RandomInteger(1000, 9999);
+  while (!digitsUnique(secret))
+    secret = RandomInteger(1000, 9999);
+  return secret;
+}
+
+/* Determines how many digits are placed correctly */
+int getDigitsInPlace(int secret, int guess)
+{
+  int s_digits[4], g_digits[4];
+  storeDigits(secret, s_digits);
+  storeDigits(guess, g_digits);
+
+  int i, correct = 0;
+  for(i=0; i<4; i++)
+    if (s_digits[i] == g_digits[i])
+      correct++;
+
+  return correct;
 }
