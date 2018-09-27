@@ -11,40 +11,46 @@ void storeDigits(int, int[]);
 int secretGen();
 int digitsInPlace(int[], int[]);
 int matchingDigits(int[], int[]);
-void fancyPrint(int, char *);
+void positionPrint(int, char *);
+void existencePrint(int);
 
 int main()
 {
   Randomize();
 
-  int i, guess, secret;
+  int attempt, guess, secret;
   int s_digits[4], g_digits[4];
-  int d_matching, d_inPlace, d_outPlace;
+  int d_matching, d_notExist, d_inPlace, d_outPlace;
   
+  /* Get a secret value for user to guess */
   secret = secretGen();
+  storeDigits(secret, s_digits);
   
-  for (i=0; i<40; i++) {
+  for (attempt=1; attempt<=40; ++attempt) {
+    /* Menu */
     printf("(debug) Secret: %d\n", secret); 
-    printf("Enter a 4-digit number: ");
+    printf("\nAttempt #%-2d\nEnter a 4-digit number: ", attempt);
     scanf("%d", &guess);
-    
+
+    /* Ensure user's digits are uniquee */
     while(!digitsUnique(guess)) {
       printf("Please enter a value without repeated digits: ");
       scanf("%d", &guess);
     }
-    
-    storeDigits(secret, s_digits);
+
+    /* store guess in array */
     storeDigits(guess, g_digits);
 
+    /* How good is the user's guess? */
     d_matching = matchingDigits(s_digits, g_digits);
+    d_notExist = 4-d_matching;
     d_inPlace = digitsInPlace(s_digits, g_digits);
     d_outPlace = d_matching - d_inPlace;
 
-    fancyPrint(d_inPlace, "in place");
-    fancyPrint(d_outPlace, "out of place");
-    fancyPrint(4-d_matching, "not existing");
-    
-    printf("\n");
+    /* Print results of guess */
+    positionPrint(d_inPlace, "in place");
+    positionPrint(d_outPlace, "out of place");
+    existencePrint(d_notExist);
   }
 
   return 0;
@@ -92,7 +98,7 @@ int digitsInPlace(int s_digits[4], int g_digits[4])
   return correct;
 }
 
-/* returns number of digits in g_digits that appear in s_digits */
+/* Returns number of digits in g_digits that appear in s_digits */
 int matchingDigits(int s_digits[4], int g_digits[4])
 {
   int i, j, matching=0;
@@ -103,10 +109,19 @@ int matchingDigits(int s_digits[4], int g_digits[4])
 }
 
 /* prints "digits/digit are/is <suffix>" with good grammar */
-void fancyPrint(int quantity, char *suffix)
+void positionPrint(int quantity, char *suffix)
 {
   if (quantity == 1)
     printf("1 digit is %s\n", suffix);
   else
     printf("%d digits are %s\n", quantity, suffix);
+}
+
+/* Prints "digit/digits does/do not exist" with good grammar */
+void existencePrint(int quantity)
+{
+  if (quantity == 1)
+    printf("1 digit does not exist\n");
+  else
+    printf("%d digits do not exist\n", quantity);
 }
