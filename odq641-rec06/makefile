@@ -7,8 +7,8 @@ tidy:
 # Compiler Flags:
 # -g add debug info to executable
 # -Wall turn on most warning flags
-CC = clang
-CFLAGS = -Wall -g
+CC = gcc
+CFLAGS = -Wall
 
 # C Compilations
 rec05.o: rec06.c random.h
