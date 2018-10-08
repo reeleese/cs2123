@@ -1,0 +1,27 @@
+Script started on Mon Oct  8 15:06:57 2018
+[1m[7m%[27m[1m[0m                                                                                          ]2;leereese@Lees-MacBook-Pro: ~/github/cs2123/odq641-rec07/08-Abstract-Data-Types]1;..ct-Data-Types[0m[27m[24m[J[01;32m➜  [36m08-Abstract-Data-Types[00m [01;34mgit:([31mmaster[34m) [33m✗[00m [K[?1h=[?2004h../rpncalc[?1l>[?2004l
+]2;./rpncalc]1;./rpncalcRPN Calculator Simulation (type H for help)
+> h
+Enter expressions in Reverse Polish Notation,
+in which operators follow the operands to which
+they apply.  Each line consists of a number, an
+operator, or one of the following commands:
+  Q -- Quit the program
+  H -- Display this help message
+  C -- Clear the calculator stack
+  S -- Display all values in the stack
+> 3
+> 3
+> +
+6
+> 3
+> *
+18
+> 9
+> /
+2
+> -
+Error: Pop of an empty stack
+[1m[7m%[27m[1m[0m                                                                                          ]2;leereese@Lees-MacBook-Pro: ~/github/cs2123/odq641-rec07/08-Abstract-Data-Types]1;..ct-Data-Types[0m[27m[24m[J[01;31m➜  [36m08-Abstract-Data-Types[00m [01;34mgit:([31mmaster[34m) [33m✗[00m [K[?1h=[?2004h./rpncalc[9Dscript output.txt[17D./rpncalc        [8D[9D         [9D./rpncalc[9D         [9D[?2004l
+
+Script done on Mon Oct  8 15:07:56 2018
