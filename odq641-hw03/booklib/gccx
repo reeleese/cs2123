@@ -1,0 +1,11 @@
+#! /bin/csh -f
+set INCLUDE = /Users/leereese/github/cs2123/odq641-hw03/booklib
+set CSLIB = $INCLUDE/cslib.a
+set LIBRARIES = ($CSLIB -lm)
+foreach x ($*)
+  if ("x$x" == "x-c") then
+    set LIBRARIES = ""
+    break
+  endif
+end
+gcc -g -I$INCLUDE $* $LIBRARIES
