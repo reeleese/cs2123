@@ -8,8 +8,8 @@ typedef struct point {
 } myDataT;
 
 struct listCDT {
-	myDataT *start; // myDataT *header;
-	myDataT *end;   // myDataT *foother;
+    myDataT *start; // myDataT *header;
+    myDataT *end;   // myDataT *foother;
 };
 
 listADT NewList()
@@ -67,6 +67,17 @@ void list_insert_unsorted(listADT a, int val)
 	a->end->next = b;   
     }
     a->end = b;
+}
+
+void list_print_values(listADT a, char *name)
+{
+    myDataT *index;
+
+    printf("%s:", name);
+    for (index = a->start; index; index = index->next) {
+	printf(" %d", index->x);
+    }
+    printf("\n");
 }
 
 
