@@ -166,16 +166,20 @@ void list_delete_by_value(listADT a, listElementT val)
 
     /* Find index of val */
     for(index = a->start; index; index = index->next) {
-	if (index->x = val)
+	if (index->x == val)
 	    break;
 	prev = index;
     }
 
-    /* Cut out index of val */
-    if (index) {
-	prev->next = index->next;
-	free(index);
+    if (index == a->start)
+	a->start = index->next;
+    else if (index == a->end) {
+	a->end = prev;
+	a->end->next = NULL;
     }
+    else if (index)
+	prev->next = index->next;
+    
+    free(index);
 }
-
 
