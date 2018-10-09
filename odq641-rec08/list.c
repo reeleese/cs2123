@@ -33,11 +33,9 @@ listADT list_n_copy(listADT a, int x)
     /* Special Cases */
     if (a == NULL)
 	return NULL;
-
-    if (b == NULL)
+    else if (b == NULL)
 	return NULL;
-
-    if (x < 1) 
+    else if (x < 1) 
 	return b;
 
     /* Make b->start */
@@ -50,7 +48,7 @@ listADT list_n_copy(listADT a, int x)
     to_prev = to;
     from = from->next;
 
-    /* Copy rest of a (less than x) to b */
+    /* Copy rest of a (max x elements) to b */
     for (i=1; from && i<x; ++i) {
 	to = (myDataT *) malloc(sizeof(myDataT));
 	to->x = from->x;
@@ -133,7 +131,6 @@ void list_print_values(listADT a, char *name)
     }
     
     myDataT *index;
-
     printf("%s:", name);
     for (index = a->start; index; index = index->next) {
 	printf(" %d", index->x);
@@ -146,11 +143,14 @@ double list_average(listADT a)
 {
     if (a == NULL)
 	return 0.0;
+    else if (a->start == NULL)
+	return 0.0;
     
     myDataT *index;
     double sum, count;
     sum = count = 0;
 
+    /* Count items in a and accumulate their sum */
     for (index = a->start; index; index = index->next) {
 	sum += index->x;
 	++count;
@@ -171,6 +171,7 @@ void list_delete_by_value(listADT a, listElementT val)
 	prev = index;
     }
 
+    /* Delete index with handling for first and last */
     if (index == a->start)
 	a->start = index->next;
     else if (index == a->end) {

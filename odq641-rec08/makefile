@@ -8,7 +8,7 @@ scratch: tidy
 	rm -f *.o *.a $(PROGRAMS)
 
 # Compiler Flags
-CC = clang
+CC = gcc
 CFLAGS = -g -Wall
 
 # C Compilations
