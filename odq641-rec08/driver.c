@@ -21,6 +21,13 @@ int main()
     list_print_values(X, "X");
     list_print_values(Y, "Y");
 
+    /* Print averages for X and Y */
+    double X_average, Y_average;
+    X_average = list_average(X);
+    Y_average = list_average(Y);
+    printf("X average: %g\n", X_average); 
+    printf("Y average: %g\n", Y_average); 
+    
     
     
     /* Free X and Y */

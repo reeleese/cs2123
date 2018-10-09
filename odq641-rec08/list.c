@@ -95,5 +95,19 @@ void list_print_values(listADT a, char *name)
     printf("\n");
 }
 
+double list_average(listADT a)
+{
+    myDataT *index;
+    double sum, count;
+    sum = count = 0;
+
+    for (index = a->start; index; index = index->next) {
+	sum += index->x;
+	++count;
+    }
+
+    return sum / count;
+}
+
 
 
