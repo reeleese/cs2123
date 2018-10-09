@@ -23,6 +23,48 @@ listADT NewList()
    return tmp;
 }
 
+listADT list_n_copy(listADT a, int x)
+{
+    int i;
+    myDataT *from, *to, *to_prev;
+    listADT b;
+    b = NewList();
+
+    /* Special Cases */
+    if (a == NULL)
+	return NULL;
+
+    if (b == NULL)
+	return NULL;
+
+    if (x < 1) 
+	return b;
+
+    /* Make b->start */
+    to = (myDataT *) malloc(sizeof(myDataT));
+    b->start = to;
+
+    /* Copy first element from a to b*/
+    from = a->start;
+    to->x = from->x;
+    to_prev = to;
+    from = from->next;
+
+    /* Copy rest of a (less than x) to b */
+    for (i=1; from && i<x; ++i) {
+	to = (myDataT *) malloc(sizeof(myDataT));
+	to->x = from->x;
+	to_prev->next = to;
+	to_prev = to;
+        from = from->next;
+    }
+
+    /* Make to last element in b and return*/
+    to->next = NULL;
+    b-> end = to;
+    return b;
+}
+
 void FreeList(listADT a)
 {
     myDataT *curr, *prev;
@@ -85,6 +127,11 @@ void list_insert_unsorted(listADT a, int val)
 
 void list_print_values(listADT a, char *name)
 {
+    if (a == NULL) {
+	printf("%s: <NULL>\n", name);
+	return;
+    }
+    
     myDataT *index;
 
     printf("%s:", name);
@@ -97,6 +144,9 @@ void list_print_values(listADT a, char *name)
 
 double list_average(listADT a)
 {
+    if (a == NULL)
+	return 0.0;
+    
     myDataT *index;
     double sum, count;
     sum = count = 0;

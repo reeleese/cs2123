@@ -28,7 +28,10 @@ int main()
     printf("X average: %g\n", X_average); 
     printf("Y average: %g\n", Y_average); 
     
-    
+    /* Copy first 3 elements of X to new list Z and print Z */
+    listADT Z;
+    Z = list_n_copy(X, 3);
+    list_print_values(Z, "Z");
     
     /* Free X and Y */
     FreeList(X);
