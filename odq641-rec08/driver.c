@@ -11,7 +11,7 @@ int main()
     /* Populate lists X and Y */
     listElementT userInput;
     for (i = 0; i < 6; ++i) {
-	printf("Number %d: ", i);
+	printf("Number %d: ", i+1);
 	scanf("%d", &userInput);
 	list_insert_sorted(X, userInput);
 	list_insert_unsorted(Y, userInput);
@@ -23,7 +23,9 @@ int main()
 
     
     
-    list_insert_sorted(X, 9); //  why not list_insert_sorted(&X, 9);
+    /* Free X and Y */
+    FreeList(X);
+    FreeList(Y);
 
    return 0;
 }

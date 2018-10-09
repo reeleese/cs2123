@@ -23,6 +23,20 @@ listADT NewList()
    return tmp;
 }
 
+void FreeList(listADT a)
+{
+    myDataT *curr, *prev;
+    curr = a->start;
+
+    while (curr) {
+	prev = curr;
+	curr = curr->next;
+	free(prev);
+    }
+
+    free(a);
+}
+
 void list_insert_sorted(listADT a, int val)
 {
     myDataT *b, *prev, *curr;
@@ -77,6 +91,7 @@ void list_print_values(listADT a, char *name)
     for (index = a->start; index; index = index->next) {
 	printf(" %d", index->x);
     }
+    
     printf("\n");
 }
 
