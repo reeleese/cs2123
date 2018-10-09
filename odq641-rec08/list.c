@@ -150,7 +150,7 @@ double list_average(listADT a)
     double sum, count;
     sum = count = 0;
 
-    /* Count items in a and accumulate their sum */
+    /* Count # of items in a and accumulate their sum */
     for (index = a->start; index; index = index->next) {
 	sum += index->x;
 	++count;
@@ -171,7 +171,7 @@ void list_delete_by_value(listADT a, listElementT val)
 	prev = index;
     }
 
-    /* Delete index with handling for first and last */
+    /* Delete index, handling for edge cases */
     if (index == a->start)
 	a->start = index->next;
     else if (index == a->end) {

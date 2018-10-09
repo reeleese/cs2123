@@ -28,13 +28,13 @@ int main()
     printf("X average: %g\n", X_average); 
     printf("Y average: %g\n", Y_average); 
 
-    /* Remove a value from X and from Y */
+    /* Get values to remove from X and Y. Remove them */
     listElementT X_target, Y_target;
     printf("Value to delete from X: ");
     scanf("%d", &X_target);
     printf("Value to delete from Y: ");
     scanf("%d", &Y_target);
-    
+
     list_delete_by_value(X, X_target);
     list_delete_by_value(Y, Y_target);
 
@@ -44,7 +44,7 @@ int main()
     
     /* Copy first 3 elements of X to new list Z and print Z */
     listADT Z;
-    Z = list_n_copy(X, 0);
+    Z = list_n_copy(X, 3);
     list_print_values(Z, "Z");
 
     /* Print average for Z */
