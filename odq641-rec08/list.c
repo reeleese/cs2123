@@ -159,5 +159,23 @@ double list_average(listADT a)
     return sum / count;
 }
 
+void list_delete_by_value(listADT a, listElementT val)
+{
+    myDataT *prev;
+    myDataT *index;
+
+    /* Find index of val */
+    for(index = a->start; index; index = index->next) {
+	if (index->x = val)
+	    break;
+	prev = index;
+    }
+
+    /* Cut out index of val */
+    if (index) {
+	prev->next = index->next;
+	free(index);
+    }
+}
 
 

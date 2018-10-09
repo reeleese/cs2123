@@ -11,5 +11,6 @@ void list_insert_sorted(listADT a, listElementT val);
 void list_insert_unsorted(listADT a, listElementT val); 
 void list_print_values(listADT a, char *name);
 double list_average(listADT a);
+void list_delete_by_value(listADT a, listElementT val);
 
 #endif 

@@ -32,10 +32,16 @@ int main()
     listADT Z;
     Z = list_n_copy(X, 3);
     list_print_values(Z, "Z");
+
+    /* Print average for Z */
+    double Z_average;
+    Z_average = list_average(Z);
+    printf("Z average: %g\n", Z_average);
     
-    /* Free X and Y */
+    /* Free lists*/
     FreeList(X);
     FreeList(Y);
+    FreeList(Z);
 
    return 0;
 }
