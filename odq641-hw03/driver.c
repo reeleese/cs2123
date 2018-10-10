@@ -2,7 +2,11 @@
 #include <stdio.h>
 #include <string.h>
 
+#define TAG_CLOSING 1
+#define TAG_OPENING -1
+
 char *readTag(FILE **infp);
+int getType(char *tag);
 
 int main(int argc, char *argv[])
 {
@@ -46,6 +50,7 @@ char *readTag(FILE **infp)
 	return NULL;
     }
 
+    /* Read all characters into string from infp until '>'*/
     char c; char *str = string;
     while(fscanf(*infp, "%c", &c) == 1) {
 	if (c == '>') {
@@ -56,6 +61,17 @@ char *readTag(FILE **infp)
 	++str;
     }
     return string;
+}
+
+int getType(char *tag)
+{
+    /* if tag is single-sided or comment, return -1 */
+    int tag_len = strlen(tag);
+    if (tag[0] == '!' || tag[tag_len-1] == '/')
+	return 0;
+    if (tag[0] == '/')
+	return 1;
+    return -1;
 }
 
 
