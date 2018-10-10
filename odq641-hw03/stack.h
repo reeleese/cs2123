@@ -22,7 +22,7 @@
  * be changed by editing this definition line.
  */
 
-typedef void *stackElementT;
+typedef char *stackElementT;
 
 /*
  * Type: stackADT
