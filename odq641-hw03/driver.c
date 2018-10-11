@@ -2,11 +2,17 @@
 #include <stdio.h>
 #include <string.h>
 
-#define TAG_CLOSING 1
-#define TAG_OPENING -1
+#define TAG_CLOSE 1
+#define TAG_OPEN 0;
+
+typedef struct TagS {
+    char *type;
+    int opening;
+} Tag;
 
 char *readTag(FILE **infp);
 int getType(char *tag);
+int tagsMatch(char *open, char *close);
 
 int main(int argc, char *argv[])
 {
@@ -29,13 +35,17 @@ int main(int argc, char *argv[])
 	return -1;
     }
 
-    char x; char *string;
-    while(fscanf(infp, "%c", &x) == 1) {
+    stackADT openTags, closeTags;
+    openTags = NewStack();
+    closeTags = NewStack();
+
+    /* Populate openTags and closeTags from infp */
+    char x; char *tag;
+    while((fscanf(infp, "%c", &x) == 1)) {
 	if (x == '<') {
-	    string = readTag(&infp);
-	    printf("%2ld: %s\n", ftell(infp), string);
+	    tag = readTag(&infp);
+	    printf("%s\n", tag);
 	}
-	
     }
     
     return 0;
@@ -50,28 +60,7 @@ char *readTag(FILE **infp)
 	return NULL;
     }
 
-    /* Read all characters into string from infp until '>'*/
-    char c; char *str = string;
-    while(fscanf(*infp, "%c", &c) == 1) {
-	if (c == '>') {
-	    *str = '\0';
-	    break;
-	}
-	*str = c;
-	++str;
-    }
+    /* Read all chars into string until '>' */
+    fscanf(*infp, "%[^>]s", string);
     return string;
 }
-
-int getType(char *tag)
-{
-    /* if tag is single-sided or comment, return -1 */
-    int tag_len = strlen(tag);
-    if (tag[0] == '!' || tag[tag_len-1] == '/')
-	return 0;
-    if (tag[0] == '/')
-	return 1;
-    return -1;
-}
-
-
