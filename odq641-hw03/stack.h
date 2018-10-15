@@ -6,7 +6,7 @@
  * the stack are constrained to a single type, although it
  * is easy to change that type by changing the definition of
  * stackElementT in this interface.
- */
+ /*/
 
 #ifndef _stack_h
 #define _stack_h
