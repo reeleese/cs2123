@@ -1,8 +1,8 @@
 all: driver
 
 # Compiler Flags
-CC = clang -I booklib
-CFLAGS = -g -Wall
+CC = gcc -I booklib
+CFLAGS = -Wall
 
 # Cleanup
 tidy:
