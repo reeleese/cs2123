@@ -1,12 +1,13 @@
 # Makefile for programs in directory 09-Efficiency-and-ADTs
 # ***************************************************************
 
-PROGRAMS = \
-    array-editor \
-    stack-editor \
-    list-editor\
-    ddlist-editor
+#PROGRAMS = \
+#    array-editor \
+#    stack-editor \
+#    list-editor \
+#    ddlist-editor
 
+PROGRAMS = list-editor
 # ***************************************************************
 # Parameters to control Makefile operation
 # Note that the gccx command script must be defined
@@ -14,7 +15,7 @@ PROGRAMS = \
 #CC = gccx
 #gcc -I..booklib  -o prog   prog.c  ../booklib/cslib.a
 CC = gcc -I../booklib  
-CFLAGS = 
+CFLAGS = -g -Wall
 
 # ***************************************************************
 # Entry to bring the package up to date

@@ -140,3 +140,17 @@ void DisplayBuffer(bufferADT buffer)
     }
     printf("^\n");
 }
+
+
+void ReplaceCharInBuffer(bufferADT buffer, char oldch, char newch)
+{
+    cellT *cp;
+    for(cp = buffer->cursor; cp; cp = cp->link) {
+	if (cp->ch == oldch) {
+	    cp->ch = newch;
+	    buffer->cursor = cp;
+	    return;
+	}
+    }
+
+}

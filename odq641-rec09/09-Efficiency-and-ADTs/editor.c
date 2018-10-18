@@ -19,7 +19,7 @@ static void HelpCommand(void);
 
 /* Main program */
 
-main()
+int main()
 {
     bufferADT buffer;
 
@@ -30,6 +30,7 @@ main()
         DisplayBuffer(buffer);
     }
     FreeBuffer(buffer);
+    return 0;
 }
 
 /*
@@ -54,6 +55,7 @@ static void ExecuteCommand(bufferADT buffer, string line)
       case 'B': MoveCursorBackward(buffer); break;
       case 'J': MoveCursorToStart(buffer); break;
       case 'E': MoveCursorToEnd(buffer); break;
+      case 'R': ReplaceCharInBuffer(buffer, line[1], line[2]); break; 
       case 'H': HelpCommand(); break;
       case 'Q': exit(0);
       default:  printf("Illegal command\n"); break;
@@ -76,6 +78,7 @@ static void HelpCommand(void)
     printf("  J      Jumps to the beginning of the buffer\n");
     printf("  E      Jumps to the end of the buffer\n");
     printf("  D      Deletes the next character\n");
+    printf("  R...   Replaces next instance of first char with second\n");
     printf("  H      Generates a help message\n");
     printf("  Q      Quits the program\n");
 }

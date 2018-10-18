@@ -99,4 +99,15 @@ void DeleteCharacter(bufferADT buffer);
 
 void DisplayBuffer(bufferADT buffer);
 
+/*
+ * Function: ReplaceCharInBuffer
+ * Usage: ReplaceCharInBuffer(buffer, old_character, new_character)
+ * -----------------------------
+ * This function replaces the next instance of old_character following
+ * the cursor position with new_character
+ */
+
+void ReplaceCharInBuffer(bufferADT buffer, char oldch, char newch);
+int SearchStrBuffer(bufferADT buffer, char* str);
+
 #endif
