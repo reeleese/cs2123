@@ -55,11 +55,13 @@ static void ExecuteCommand(bufferADT buffer, string line)
       case 'B': MoveCursorBackward(buffer); break;
       case 'J': MoveCursorToStart(buffer); break;
       case 'E': MoveCursorToEnd(buffer); break;
-      case 'R': ReplaceCharInBuffer(buffer, line[1], line[2]); break; 
+      case 'R': ReplaceCharInBuffer(buffer, line[1], line[2]); break;
+      case 'S': SearchStrBuffer(buffer, &line[1]); break;
       case 'H': HelpCommand(); break;
       case 'Q': exit(0);
       default:  printf("Illegal command\n"); break;
     }
+    free(line); /* clear memory leak */
 }
 
 /*

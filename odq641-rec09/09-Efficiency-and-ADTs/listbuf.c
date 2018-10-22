@@ -145,7 +145,7 @@ void DisplayBuffer(bufferADT buffer)
 void ReplaceCharInBuffer(bufferADT buffer, char oldch, char newch)
 {
     cellT *cp;
-    for(cp = buffer->cursor; cp; cp = cp->link) {
+    for(cp = buffer->cursor; cp; cp = cp->link) {/* For each cp in buffer */
 	if (cp->ch == oldch) {
 	    cp->ch = newch;
 	    buffer->cursor = cp;
@@ -153,4 +153,26 @@ void ReplaceCharInBuffer(bufferADT buffer, char oldch, char newch)
 	}
     }
 
+}
+
+int SearchStrBuffer(bufferADT buffer, char *str)
+{
+    /* str is empty string */
+    if (str == NULL) return 1;
+
+    cellT *cp; char *mystr;
+    for(cp = buffer->cursor; cp; cp = cp->link) {/* For each cp in buffer */
+	mystr = str;
+
+	/* Check for rest of str in buffer */
+	while (cp->ch == *mystr++) {
+	    if (*mystr == '\0') {/* Success */
+		buffer->cursor = cp;
+		return 1;
+	    }
+	    cp = cp->link;
+	}/* while */
+    }/* for */
+    
+    return 0;
 }

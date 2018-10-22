@@ -101,13 +101,22 @@ void DisplayBuffer(bufferADT buffer);
 
 /*
  * Function: ReplaceCharInBuffer
- * Usage: ReplaceCharInBuffer(buffer, old_character, new_character)
+ * Usage: ReplaceCharInBuffer(buffer, old character, new character)
  * -----------------------------
  * This function replaces the next instance of old_character following
  * the cursor position with new_character
  */
 
 void ReplaceCharInBuffer(bufferADT buffer, char oldch, char newch);
+
+/*
+ * Function: SearchStrBuffer
+ * Usage: SearchStrBuffer(buffer, target string)
+ * -----------------------------
+ * This function searches for the first instance of the target string and
+ * places the cursor after this instance
+ */
+
 int SearchStrBuffer(bufferADT buffer, char* str);
 
 #endif
