@@ -81,6 +81,7 @@ static void HelpCommand(void)
     printf("  E      Jumps to the end of the buffer\n");
     printf("  D      Deletes the next character\n");
     printf("  R...   Replaces next instance of first char with second\n");
+    printf("  S...   Places the cursor after next instance of given string\n");
     printf("  H      Generates a help message\n");
     printf("  Q      Quits the program\n");
 }
