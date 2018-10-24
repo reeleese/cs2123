@@ -1,0 +1,55 @@
+#include "set.h"
+#include <stdio.h>
+
+#define initial_capacity 100
+
+struct setCDT {
+    setELementT *elements;
+    int size;
+};
+
+setADT setNew()
+{
+    setADT A;
+    A = (setADT) malloc(sizeof(struct setCDT));
+    if (A == NULL)
+	return NULL;
+    
+    A->size = 0;
+    return A;
+}
+
+void setFree()
+{
+
+}
+
+int setInsertElementSorted(setADT A, setElementT item)
+{
+    return -1;
+}
+
+setADT setUnion(setADT A, setADT B)
+{
+    return NULL;
+}
+
+setADT setIntersection(setADT A, setADT B)
+{
+    return NULL;
+}
+
+setADT setDifference(setADT A, setADT B)
+{
+    return NULL;
+}
+
+int setCardinality(setADT A)
+{
+    return -1;
+}
+
+void setPrint(setADT A, char *name)
+{
+    printf("print!\n");
+}
