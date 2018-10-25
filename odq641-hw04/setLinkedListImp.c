@@ -1,5 +1,6 @@
 #include "set.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 typedef struct NodeS {
     setElementT data;
@@ -13,13 +14,27 @@ struct setCDT {
 
 setADT setNew()
 {
+    setADT A;
+    A = (setADT) malloc(sizeof(struct setCDT));
+    if (A == NULL)
+	return NULL;
     
-    return NULL;
+    A->size = 0;
+    A->head = NULL;
+    return A;
 }
 
-void setFree()
+void setFree(setADT A)
 {
-
+    Node *cp, *prev;
+    cp = A->head;
+    
+    while(cp) {
+	prev = cp;
+	cp = cp->next;
+	free(prev);
+    }
+    free(A);
 }
 
 int setInsertElementSorted(setADT A, setElementT item)

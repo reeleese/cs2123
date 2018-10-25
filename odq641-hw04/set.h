@@ -5,7 +5,7 @@ typedef int setElementT;
 typedef struct setCDT *setADT;
 
 setADT setNew();
-void setFree();
+void setFree(setADT);
 
 int setInsertElementSorted(setADT A, setElementT item);
 
