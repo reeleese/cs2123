@@ -22,7 +22,7 @@ void populateSet(setADT A, char *name)
 {
     int num = 0;
     printf("Give values for %s (enter -1 to end input):\n", name);
-    while (num != -1) {
+    while (1) {
 	printf("> ");
 	scanf("%d", &num);
 	if (num == -1) break;
