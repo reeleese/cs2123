@@ -64,8 +64,23 @@ int setInsertElementSorted(setADT A, setElementT item)
 
 setADT setUnion(setADT A, setADT B)
 {
+    int i, j;
+    setElementT *aArr, *bArr;
+    setADT C;
     
-    return NULL;
+    C = setNew();
+    aArr = A->elements;
+    bArr = B->elements;
+
+    /* For all setElementT x in A, insert x into C */
+    for (i=0; i<A->size; ++i)
+	setInsertElementSorted(C, aArr[i]);
+ 
+    /* For all setElementT x in B, insert x into C */
+    for (i=0; i<B->size; ++i)
+	setInsertElementSorted(C, bArr[i]);
+    
+    return C;
 }
 
 setADT setIntersection(setADT A, setADT B)
