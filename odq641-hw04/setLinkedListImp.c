@@ -95,7 +95,25 @@ setADT setIntersection(setADT A, setADT B)
 
 setADT setDifference(setADT A, setADT B)
 {
-    return NULL;
+    int flag=0;
+    Node *cpA, *cpB;
+    setADT C;
+
+    C = setNew();
+
+    /* For each element in A, compare it with each element in B */
+    for (cpA=A->head; cpA; cpA=cpA->next) {
+	for (cpB=B->head; cpB; cpB = cpB->next) {
+	    if (cpA->data == cpB->data) {
+		flag = 1;
+		break;
+	    }
+	}
+	/* If A[i] appeared in B, do not add it to C. Else, add it */
+	flag? flag=0 : setInsertElementSorted(C, cpA->data);
+    }
+    
+    return C;
 }
 
 int setCardinality(setADT A)
