@@ -69,7 +69,23 @@ setADT setUnion(setADT A, setADT B)
 
 setADT setIntersection(setADT A, setADT B)
 {
-    return NULL;
+    int i, j;
+    setElementT *aArr, *bArr;
+    setADT C;
+    
+    C = setNew();
+    aArr = A->elements;
+    bArr = B->elements;
+
+    /* For all setElementT x in A and B, insert x into C */
+    for (i=0; i<A->size; ++i) {
+	for (j=0; j<B->size; ++j) {
+	    if (aArr[i] == bArr[j])
+		setInsertElementSorted(C, aArr[i]);
+	}
+    }
+    
+    return C;
 }
 
 setADT setDifference(setADT A, setADT B)
@@ -79,11 +95,16 @@ setADT setDifference(setADT A, setADT B)
 
 int setCardinality(setADT A)
 {
-    return -1;
+    return A->size;
 }
 
 void setPrint(setADT A, char *name)
 {
+    if (A->size == 0) {
+	printf("%s: <empty>\n", name);
+	return;
+    }
+	
     int i;
     printf("%s:", name);
     for (i=0; i<A->size; ++i) {

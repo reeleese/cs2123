@@ -78,7 +78,19 @@ setADT setUnion(setADT A, setADT B)
 
 setADT setIntersection(setADT A, setADT B)
 {
-    return NULL;
+    Node *cpA, *cpB;
+    setADT C;
+
+    C = setNew();
+
+    for (cpA=A->head; cpA; cpA = cpA->next) {
+	for (cpB=B->head; cpB; cpB = cpB->next) {
+	    if (cpA->data == cpB->data)
+		setInsertElementSorted(C, cpA->data);
+	}
+    }
+	    
+    return C;
 }
 
 setADT setDifference(setADT A, setADT B)
@@ -88,13 +100,17 @@ setADT setDifference(setADT A, setADT B)
 
 int setCardinality(setADT A)
 {
-    return -1;
+    return A->size;
 }
 
 void setPrint(setADT A, char *name)
 {
-    Node *cp;
+    if (A->size == 0) {
+	printf("%s: <empty>\n", name);
+	return;
+    }
 
+    Node *cp;
     printf("%s:", name);
     for (cp = A->head; cp; cp = cp->next) {
 	printf(" %d,", cp->data);
