@@ -99,6 +99,7 @@ setADT setDifference(setADT A, setADT B)
     aArr = A->elements;
     bArr = B->elements;
 
+    /* For each element in A, compare it with each element in B */
     for (i=0; i<A->size; ++i) {
 	for (j=0; j<B->size; ++j) {
 	    if (aArr[i] == bArr[j]) {
@@ -106,6 +107,7 @@ setADT setDifference(setADT A, setADT B)
 		break;
 	    }
 	}
+	/* If A[i] appeared in B, do not add it to C. Else, add it */
 	flag? flag=0 : setInsertElementSorted(C, aArr[i]);
     }
     

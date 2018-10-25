@@ -17,7 +17,8 @@ int main()
     populateSet(B, "B");
 
     /* Menu loop */
-    while (1) {
+    int done = 0;
+    while (!done) {
 	C = NULL;
 	printf("Command: ");
 	scanf(" %c", &user_option);
@@ -27,7 +28,7 @@ int main()
 	  case 'I' : C = setIntersection(A, B); break;
 	  case 'D' : C = setDifference(A, B); break;
 	  case 'H' : printCommands(); break;
-	  case 'Q' : return 0;
+  	  case 'Q' : done = 1; break;
 	  default  : printf("Unrecognized command \"%c\"\n", user_option);
 	}
         
@@ -39,10 +40,11 @@ int main()
 	    setFree(C);
 	}
     }
-    
+
+    /* Free A and B */
     setFree(A);
     setFree(B);
-    setFree(C);
+        
     return 0;
 }
 
