@@ -1,7 +1,14 @@
-CC = clang
+CC = gcc
 CFLAGS = -g -Wall
 
 all: array list
+
+tidy:
+	rm -f ,* .,* *~ core a.out graphics.ps
+
+scratch: tidy
+	rm -f *.o *.a driver-list driver-array
+	rm -r *.dSYM
 
 setArrayImp.o: setArrayImp.c set.h
 	$(CC) $(CFLAGS) -c setArrayImp.c

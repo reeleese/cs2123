@@ -14,6 +14,7 @@ struct setCDT {
 
 setADT setNew()
 {
+    /* Allocate A */
     setADT A;
     A = (setADT) malloc(sizeof(struct setCDT));
     if (A == NULL)
@@ -28,6 +29,7 @@ void setFree(setADT A)
 {
     Node *cp, *prev;
 
+    /* For each Node in A, free it */
     cp = A->head;
     while(cp) {
 	prev = cp;
@@ -85,7 +87,8 @@ setADT setUnion(setADT A, setADT B)
     /* For all setElementT x in B, insert x into C */
     for (cpB=B->head; cpB; cpB = cpB->next)
 	setInsertElementSorted(C, cpB->data);  
-
+    /* Note: this works only because insert ignores duplicate values :D */
+    
     return C;
 }
 
@@ -96,10 +99,13 @@ setADT setIntersection(setADT A, setADT B)
 
     C = setNew();
 
+    /* For all setElementT x in A, insert x into C iff x in B */
     for (cpA=A->head; cpA; cpA = cpA->next) {
 	for (cpB=B->head; cpB; cpB = cpB->next) {
-	    if (cpA->data == cpB->data)
+	    if (cpA->data == cpB->data) {
 		setInsertElementSorted(C, cpA->data);
+		break;
+	    }
 	}
     }
 	    
@@ -136,15 +142,19 @@ int setCardinality(setADT A)
 
 void setPrint(setADT A, char *name)
 {
+    /* Special case: |A| = 0 */
     if (A->size == 0) {
-	printf("%s: <empty>\n", name);
+	printf("%s = {}\n", name);
 	return;
     }
 
+    /* Print all element in A */
     Node *cp;
-    printf("%s:", name);
+    printf("%s = {", name);
     for (cp = A->head; cp; cp = cp->next) {
-	printf(" %d,", cp->data);
+	printf("%d, ", cp->data);
     }
-    printf("\b \n");
+
+    /* Remove trailing comma and add lcosing bracket*/
+    printf("\b\b} \n");
 }
