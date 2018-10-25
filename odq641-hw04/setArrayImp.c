@@ -64,6 +64,7 @@ int setInsertElementSorted(setADT A, setElementT item)
 
 setADT setUnion(setADT A, setADT B)
 {
+    
     return NULL;
 }
 
@@ -90,7 +91,25 @@ setADT setIntersection(setADT A, setADT B)
 
 setADT setDifference(setADT A, setADT B)
 {
-    return NULL;
+    int i, j, flag=0;
+    setElementT *aArr, *bArr;
+    setADT C;
+
+    C = setNew();
+    aArr = A->elements;
+    bArr = B->elements;
+
+    for (i=0; i<A->size; ++i) {
+	for (j=0; j<B->size; ++j) {
+	    if (aArr[i] == bArr[j]) {
+		flag = 1;
+		break;
+	    }
+	}
+	flag? flag=0 : setInsertElementSorted(C, aArr[i]);
+    }
+    
+    return C;
 }
 
 int setCardinality(setADT A)
