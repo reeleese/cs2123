@@ -4,13 +4,16 @@ typedef int KeyT;
 
 Tree TreeNew();
 void TreeFree(Tree t);
-void TreeInsert(Tree t, KeyT val);
+
+void TreeInsert(Tree *tptr, KeyT val);
 Node *TreeFind(Tree t, KeyT target);
 void TreeDelete(Tree t, Node *target);
-void TreePrintPreorder(Tree t);
-void TreePrintInorder(Tree t);
-void TreePrintPostorder(Tree t);
+
+void TreePreorder(Tree t, void (*func)(KeyT));
+void TreeInorder(Tree t, void (*func)(KeyT));
+void TreePostorder(Tree t, void (*func)(KeyT));
 void TreePrintLevelorder(Tree t);
+
 KeyT TreeMax(Tree t);
 KeyT TreeMin(Tree t);
 double TreeAverage(Tree t);
