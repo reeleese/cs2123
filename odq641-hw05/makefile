@@ -1,5 +1,12 @@
 all: driver
 
+tidy:
+	rm -f ,* .,* *~ core a.out graphics.ps
+
+scratch: tidy
+	rm -f *.o *.a driver-list driver-array
+	rm -r *.dSYM
+
 CC = clang
 CFLAGS = -Wall -g
 
