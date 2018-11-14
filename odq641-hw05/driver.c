@@ -23,7 +23,6 @@ int main()
         if (equal(command, "insert")) {
             scanf("%d", &arg);
             TreeInsert(&myTree, arg);
-            printf("\n");
         } else if (equal(command, "find")) {
             scanf("%d", &arg);
             TreeFind(myTree, arg)? printf("Found.\n") : printf("Not Found.\n");
