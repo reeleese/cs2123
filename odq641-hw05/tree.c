@@ -110,12 +110,16 @@ void TreePrintLevelorder(Tree t)
 
 KeyT TreeMax(Tree t)
 {
-    return -1;
+    if (t == NULL) return 0; /* empty tree */
+    if (t->right == NULL) return t->key; /* found the right-most node */
+    return TreeMax(t->right); /* continue searching */
 }
 
 KeyT TreeMin(Tree t)
 {
-    return -1;
+    if (t == NULL) return 0; /* empty tree */
+    if (t->left == NULL) return t->key; /* found the left-most node */
+    return TreeMin(t->left); /* continue searching */
 }
 
 double TreeAverage(Tree t)
