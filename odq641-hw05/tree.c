@@ -21,6 +21,19 @@ Node *NodeNew(KeyT key)
     return new;
 }
 
+void printLevel(Tree t, int h)
+{
+    if (t == NULL) return;
+
+    if (h == 1)
+        printf("%3d ", t->key);
+
+    else if (h > 1) {
+        printLevel(t->left, h-1);
+        printLevel(t->right, h-1);
+    }
+}
+
 /* PUBLIC */
 Tree TreeNew()
 {
@@ -29,7 +42,10 @@ Tree TreeNew()
 
 void TreeFree(Tree t)
 {
-    
+    if (t == NULL) return;
+    TreeFree(t->left);
+    TreeFree(t->right);
+    free(t);
 }
 
 void TreeInsert(Tree *tptr, KeyT val)
@@ -91,7 +107,7 @@ void TreeInorder(Tree t, void (*func)(KeyT) )
 {
     if (t == NULL) return;
     TreeInorder(t->left, func);
-    printf("%d ", t->key);
+    (*func)(t->key);
     TreeInorder(t->right, func);
 }
 
@@ -105,7 +121,11 @@ void TreePostorder(Tree t, void (*func)(KeyT) )
 
 void TreePrintLevelorder(Tree t)
 {
-    
+    int i, height;
+    height = TreeHeight(t);
+    for (i=1; i<=height; ++i)
+        printLevel(t, i);
+    printf("\n");
 }
 
 KeyT TreeMax(Tree t)
