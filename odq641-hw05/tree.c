@@ -129,7 +129,14 @@ double TreeAverage(Tree t)
 
 int TreeHeight(Tree t)
 {
-    return -1;
+    int max, h1, h2;
+    if (t == NULL) return 0;
+
+    h1 = TreeHeight(t->left);
+    h2 = TreeHeight(t->right);
+
+    max = h1>h2? h1 : h2;
+    return 1 + max;
 }
 
 int TreeCount(Tree t)
