@@ -45,14 +45,11 @@ void TreeInsert(Tree *tptr, KeyT val)
 
     /* INDUCTIVE CASE: Keep looking */
     else {
-        printf("%d->", t->key);
         if (t->key == val) {/* mini base case */
             return; 
         } else if (val < t->key) {
-            printf("left, " );
             TreeInsert(&t->left, val);
         } else {
-            printf("right, ");
             TreeInsert(&t->right, val);
         }
     }
@@ -60,7 +57,21 @@ void TreeInsert(Tree *tptr, KeyT val)
 
 Node *TreeFind(Tree t, KeyT target)
 {
-    return NULL;
+    /* BASE CASE: target is not in the tree*/
+    if (t == NULL) {
+        return NULL;
+    }
+    
+    /* INDUCTIVE CASE: Keep looking */
+    else {
+        if (t->key == target) {/* mini base case */
+            return t; 
+        } else if (target < t->key) {
+            return TreeFind(t->left, target);
+        } else {
+            return TreeFind(t->right, target);
+        }
+    }
 }
 
 void TreeDelete(Tree t, Node *target)
@@ -79,10 +90,6 @@ void TreePreorder(Tree t, void (*func)(KeyT) )
 void TreeInorder(Tree t, void (*func)(KeyT) )
 {
     if (t == NULL) return;
-    /* TreePreorder(t->left, func); */
-    /* (*func)(t->key); */
-    /* TreePreorder(t->right, func);   */
-
     TreeInorder(t->left, func);
     printf("%d ", t->key);
     TreeInorder(t->right, func);
@@ -98,7 +105,7 @@ void TreePostorder(Tree t, void (*func)(KeyT) )
 
 void TreePrintLevelorder(Tree t)
 {
-
+    
 }
 
 KeyT TreeMax(Tree t)
