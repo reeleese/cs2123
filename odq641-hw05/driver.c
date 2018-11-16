@@ -48,7 +48,7 @@ int main()
         } else if (equal(command, "min")) {
             printf("MIN = %d\n", TreeMin(myTree));
         } else if (equal(command, "average")) {
-            printf("AVERAGE = %lf\n", TreeAverage(myTree));
+            printf("AVERAGE = %.3lf\n", TreeAverage(myTree));
         } else if (equal(command, "height")) {
             printf("HEIGHT = %d\n", TreeHeight(myTree));
         } else if (equal(command, "count")) {
