@@ -144,7 +144,8 @@ KeyT TreeMin(Tree t)
 
 double TreeAverage(Tree t)
 {
-    return -1.0; 
+    if (t == NULL) return 0;
+    return TreeSum(t) / TreeCount(t);
 }
 
 int TreeHeight(Tree t)
@@ -161,11 +162,13 @@ int TreeHeight(Tree t)
 
 int TreeCount(Tree t)
 {
-    return -1;
+    if (t == NULL) return 0;
+    return 1 + TreeCount(t->left) + TreeCount(t->right);
 }
 
 KeyT TreeSum(Tree t)
 {
-    return -1;
+    if (t == NULL) return 0;
+    return t->key + TreeSum(t->left) + TreeSum(t->right);  
 }
 
