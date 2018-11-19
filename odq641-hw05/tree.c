@@ -34,6 +34,41 @@ void printLevel(Tree t, int h)
     }
 }
 
+void DeleteHelper(Tree *t)
+{
+    Node *target, *plmd_r, *lmd_r;
+    target = *t;
+    
+    if (target->left == NULL && target->right == NULL)
+        *t = NULL;
+    else if (target->left == NULL)
+        *t = target->right;
+    else if (target->right == NULL)
+        *t = target->left;
+    else {
+        plmd_r = target;
+        lmd_r = target->right;
+
+        /* find the left-most right descendant and its parent */
+        while (lmd_r->left) {
+            plmd_r = lmd_r;
+            lmd_r = lmd_r->left;
+        }
+
+        /* Just in case we never entered the while loop */
+        if (plmd_r == target)
+            plmd_r->right = lmd_r->right;
+        else
+            plmd_r->left = lmd_r->right;
+
+        /* Place lmd_r in target's position */
+        lmd_r->left = target->left;
+        lmd_r->right = target->right;
+        *t = lmd_r;
+    }
+    free(target); 
+}
+
 /* PUBLIC */
 Tree TreeNew()
 {
@@ -90,9 +125,20 @@ Node *TreeFind(Tree t, KeyT target)
     }
 }
 
-void TreeDelete(Tree t, Node *target)
+int TreeDelete(Tree *t, KeyT target)
 {
-    
+    Node *ptr = *t;
+
+    if (ptr == NULL)
+        return 0;
+    else if (target < ptr->key)
+        return TreeDelete(&ptr->left, target);
+    else if (target > ptr->key)
+        return TreeDelete(&ptr->right, target);
+
+    DeleteHelper(t);
+    return 1;
+       
 }
 
 void TreePreorder(Tree t, void (*func)(KeyT) )
