@@ -7,7 +7,7 @@ void TreeFree(Tree t);
 
 void TreeInsert(Tree *tptr, KeyT val);
 Node *TreeFind(Tree t, KeyT target);
-void TreeDelete(Tree t, Node *target);
+int TreeDelete(Tree *t, KeyT target);
 
 void TreePreorder(Tree t, void (*func)(KeyT));
 void TreeInorder(Tree t, void (*func)(KeyT));
