@@ -11,8 +11,7 @@ int main()
     char command[100];
     int arg, done;
     Tree myTree;
-    Node *target;
-
+    
     myTree = TreeNew();
 
     done = 0;
@@ -28,10 +27,7 @@ int main()
             TreeFind(myTree, arg)? printf("Found.\n") : printf("Not Found.\n");
         } else if (equal(command, "delete")) {
             scanf("%d", &arg);
-            if ((target = TreeFind(myTree, arg)) != NULL)
-                TreeDelete(myTree, target);
-            else
-                printf("%d is not in the tree.\n", arg);
+            TreeDelete(&myTree, arg);
         } else if (equal(command, "inorder")) {
             TreeInorder(myTree, print);
             printf("\n");
