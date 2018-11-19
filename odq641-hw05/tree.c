@@ -7,7 +7,9 @@ struct NodeCDT {
     struct NodeCDT *left, *right;
 };
 
-/* PRIVATE */
+/******************************************************************************
+*------------------------------------PRIVATE----------------------------------*
+*******************************************************************************/
 Node *NodeNew(KeyT key)
 {
     Node *new;
@@ -25,9 +27,11 @@ void printLevel(Tree t, int h)
 {
     if (t == NULL) return;
 
+    /* We made it to the level to print */
     if (h == 1)
         printf("%3d ", t->key);
 
+    /* We need to go deeper */
     else if (h > 1) {
         printLevel(t->left, h-1);
         printLevel(t->right, h-1);
@@ -69,7 +73,9 @@ void DeleteHelper(Tree *t)
     free(target); 
 }
 
-/* PUBLIC */
+/******************************************************************************
+*------------------------------------PUBLIC-----------------------------------*
+*******************************************************************************/
 Tree TreeNew()
 {
     return NULL;
@@ -88,6 +94,10 @@ void TreeInsert(Tree *tptr, KeyT val)
     Tree tmp, t;
     t = *tptr;
 
+    /* BASE CASE: Only accept positive integers */
+    if (val <= 0)
+        return;
+    
     /* BASE CASE: We found the position to insert val */
     if (t == NULL) {
         tmp = NodeNew(val);
@@ -106,17 +116,17 @@ void TreeInsert(Tree *tptr, KeyT val)
     }
 }
 
-Node *TreeFind(Tree t, KeyT target)
+int TreeFind(Tree t, KeyT target)
 {
     /* BASE CASE: target is not in the tree*/
     if (t == NULL) {
-        return NULL;
+        return 0;
     }
     
     /* INDUCTIVE CASE: Keep looking */
     else {
         if (t->key == target) {/* mini base case */
-            return t; 
+            return 1; 
         } else if (target < t->key) {
             return TreeFind(t->left, target);
         } else {
@@ -129,13 +139,17 @@ int TreeDelete(Tree *t, KeyT target)
 {
     Node *ptr = *t;
 
+    /* BASE CASE: We did not find the value to delete */
     if (ptr == NULL)
         return 0;
+
+    /* INDUCTIVE CASE: Keep looking */
     else if (target < ptr->key)
         return TreeDelete(&ptr->left, target);
     else if (target > ptr->key)
         return TreeDelete(&ptr->right, target);
 
+    /* BASE CASE: We found it and now we will go delte it */
     DeleteHelper(t);
     return 1;
        
@@ -169,6 +183,8 @@ void TreePrintLevelorder(Tree t)
 {
     int i, height;
     height = TreeHeight(t);
+
+    /* For each level in the tree starting from the top, print it */
     for (i=1; i<=height; ++i)
         printLevel(t, i);
     printf("\n");
@@ -217,4 +233,3 @@ KeyT TreeSum(Tree t)
     if (t == NULL) return 0;
     return t->key + TreeSum(t->left) + TreeSum(t->right);  
 }
-
