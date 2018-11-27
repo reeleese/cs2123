@@ -30,6 +30,7 @@ graphT *copy_graph(graphT *g);
 void help();
 int equal(char *s1, char *s2);
 graphT *which_graph(char *g, graphT *myg1, graphT *myg2);
+edgenodeT *copy_list(edgenodeT *);
 
 void delete_edge(graphT *g, int x, int y);
 void print_degree(graphT *g);
@@ -78,65 +79,65 @@ int main(int argc, char *argv[])
         if (equal(command, "insert")) {
             scanf("%s %d %d %d", s_arg1, &i_arg1, &i_arg2, &i_arg3);
             g1 = which_graph(s_arg1, myg1, myg2);
-	    insert_edge(g1, i_arg1, i_arg2, i_arg3);
-	} else if (equal(command, "delete")) {
+            insert_edge(g1, i_arg1, i_arg2, i_arg3);
+        } else if (equal(command, "delete")) {
             scanf("%s %d %d", s_arg1, &i_arg1, &i_arg2);
             g1 = which_graph(s_arg1, myg1, myg2);
-	    delete_edge(g1, i_arg1, i_arg2);
+            delete_edge(g1, i_arg1, i_arg2);
         } else if (equal(command, "printgraph")) {
-            scanf("%s %s", s_arg1, s_arg2);
+            scanf("%s", s_arg1);
             g1 = which_graph(s_arg1, myg1, myg2);
-	    print_graph(g1, s_arg2);
+            print_graph(g1, s_arg1);
         } else if (equal(command, "printdegree")) {
             scanf("%s", s_arg1);
             g1 = which_graph(s_arg1, myg1, myg2);
-	    print_degree(g1);
+            print_degree(g1);
         } else if (equal(command, "printcomplement")) {
             scanf("%s", s_arg1);
             g1 = which_graph(s_arg1, myg1, myg2);
-	    print_complement(g1);
+            print_complement(g1);
         } else if (equal(command, "eliminatelinks")) {
             scanf("%s %d %d", s_arg1, &i_arg1, &i_arg2);
-	    g1 = which_graph(s_arg1, myg1, myg2);
-	    eliminate_links(g1, i_arg1, i_arg2);	    
+            g1 = which_graph(s_arg1, myg1, myg2);
+            eliminate_links(g1, i_arg1, i_arg2);    
         } else if (equal(command, "differentlinks")) {
-	    scanf("%s %s", s_arg1, s_arg2);
-	    g1 = which_graph(s_arg1, myg1, myg2);
-	    g2 = which_graph(s_arg2, myg1, myg2);
-	    different_links(g1, g2);
-	} else if (equal(command, "commonlinks")) {
-	    scanf("%s %s", s_arg1, s_arg2);
-	    g1 = which_graph(s_arg1, myg1, myg2);
-	    g2 = which_graph(s_arg2, myg1, myg2);
-	    common_links(g1, g2);
-	} else if (equal(command, "dfs")) {
-	    scanf("%s %d", s_arg1, &i_arg1);
-	    g1 = which_graph(s_arg1, myg1, myg2);
-	    dfs(g1, i_arg1);
+            scanf("%s %s", s_arg1, s_arg2);
+            g1 = which_graph(s_arg1, myg1, myg2);
+            g2 = which_graph(s_arg2, myg1, myg2);
+            different_links(g1, g2);
+        } else if (equal(command, "commonlinks")) {
+            scanf("%s %s", s_arg1, s_arg2);
+            g1 = which_graph(s_arg1, myg1, myg2);
+            g2 = which_graph(s_arg2, myg1, myg2);
+            common_links(g1, g2);
+        } else if (equal(command, "dfs")) {
+            scanf("%s %d", s_arg1, &i_arg1);
+            g1 = which_graph(s_arg1, myg1, myg2);
+            dfs(g1, i_arg1);
         } else if (equal(command, "bfs")) {
-	    scanf("%s %d", s_arg1, &i_arg1);
-	    g1 = which_graph(s_arg1, myg1, myg2);
-	    bfs(g1, i_arg1);
+            scanf("%s %d", s_arg1, &i_arg1);
+            g1 = which_graph(s_arg1, myg1, myg2);
+            bfs(g1, i_arg1);
         } else if (equal(command, "isconnected")) {
-	    scanf("%s", s_arg1);
-	    g1 = which_graph(s_arg1, myg1, myg2);
-	    is_connected(myg1);
+            scanf("%s", s_arg1);
+            g1 = which_graph(s_arg1, myg1, myg2);
+            is_connected(myg1);
         } else if (equal(command, "numofconncomp")) {
-	    scanf("%s", s_arg1);
-	    g1 = which_graph(s_arg1, myg1, myg2);
-	    num_of_conn_comp(g1);
+            scanf("%s", s_arg1);
+            g1 = which_graph(s_arg1, myg1, myg2);
+            num_of_conn_comp(g1);
         } else if (equal(command, "quit")) {
             done = 1;
-	    printf("Bye bye.\n");
+            printf("Bye bye.\n");
         } else if (equal(command, "help")) {
-	    help();
+            help();
         } else { /* Unrecognized command */
-	    /* clear stdin */
-	    while ((c = getchar()) != '\n' && c != EOF) { }
+            /* clear stdin */
+            while ((c = getchar()) != '\n' && c != EOF) { }
             printf("Unrecognized command. ");
             printf("Type \"help\" for a list of commands.\n");
         }
-	printf("\n");
+        printf("\n");
     }
 
     free_graph(myg1);
@@ -151,9 +152,9 @@ void initialize_graph(graphT *g, bool directed)
     g->nedges = 0;
     g->directed = directed;
     for (i=1; i<=MAXV; i++) 
-	g->edges[i] = NULL;
+        g->edges[i] = NULL;
     for (i=1; i<=MAXV; i++) 
-	g->degree[i] = 0;
+        g->degree[i] = 0;
 }
 
 void read_graph(graphT *g, char *filename)
@@ -163,18 +164,18 @@ void read_graph(graphT *g, char *filename)
     int x, y, w;
     FILE *fp;
     if((fp=fopen(filename,"r"))==NULL){
-	fprintf(stderr, "Cannot open the graph file");
-	exit(-1);
+        fprintf(stderr, "Cannot open the graph file");
+        exit(-1);
     }
     fscanf(fp,"%d %d %d", &n, &m, &dir);
     g->nvertices = n; 
     g->nedges  = 0; /* insert function will increase it */
     g->directed  = dir;
     for (i=1; i<=m; i++) {
-	fscanf(fp,"%d %d %d", &x, &y, &w);
-	insert_edge(g, x, y, w);
-	if(dir==FALSE) 
-	    insert_edge(g, y, x, w);
+        fscanf(fp,"%d %d %d", &x, &y, &w);
+        insert_edge(g, x, y, w);
+        if(dir==FALSE) 
+            insert_edge(g, y, x, w);
     }
     fclose(fp);
 }
@@ -184,22 +185,22 @@ void insert_edge(graphT *g, int x, int y, int w)
     edgenodeT *pe, *ep, *prep=NULL;
     pe = malloc(sizeof(edgenodeT));
     if (pe == NULL) {
-	fprintf(stderr, "Not enough memory");
-	exit(-1);
+        fprintf(stderr, "Not enough memory");
+        exit(-1);
     }
     
     pe->weight = w;
     pe->y = y;
 
     for (ep=g->edges[x]; ep; ep=ep->next) {
-	if (ep->y > pe->y)
-	    break;
-	prep = ep;
+        if (ep->y > pe->y)
+            break;
+        prep = ep;
     }
     if (prep)
-	prep->next = pe;
+        prep->next = pe;
     else
-	g->edges[x] = pe;
+        g->edges[x] = pe;
     pe->next = ep;
 
     g->degree[x]++;
@@ -213,14 +214,14 @@ void print_graph(graphT *g, char *name)
     if(!g) return;
     printf("Graph Name: %s\n", name);
     for(i=1; i<=g->nvertices; i++) {
-	printf("Node %d: ", i);
-	pe = g->edges[i];
-	while(pe){
-	    /* printf(" %d", pe-n>y); */
-	    printf(" %d(w=%d),", pe->y, pe->weight);
-	    pe = pe->next;
-	}
-	printf("\n");
+        printf("Node %d: ", i);
+        pe = g->edges[i];
+        while(pe){
+            /* printf(" %d", pe-n>y); */
+            printf(" %d(w=%d),", pe->y, pe->weight);
+            pe = pe->next;
+        }
+        printf("\n");
     }
 }
 
@@ -229,23 +230,38 @@ void free_graph(graphT *g)
     edgenodeT *pe, *olde;
     int i;
     for(i=1; i<=g->nvertices; i++) {
-	pe = g->edges[i];
-	while(pe){
-	    olde = pe;
-	    pe = pe->next; 
-	    free(olde);
-	}
+        pe = g->edges[i];
+        while(pe){
+            olde = pe;
+            pe = pe->next; 
+            free(olde);
+        }
     }
     free(g);
 }
 
 graphT *copy_graph(graphT *g)
 {
+    int i;
     graphT *newg;
-    /* I simply return the same graph as a copy
-     * but you really need to dynamically create 
-     * another copy of the given graph */
-    newg = g;
+
+    if (!g) return NULL;
+
+    newg = (graphT *) malloc(sizeof(graphT));
+    if (newg == NULL) {
+        fprintf(stderr, "Not enough memory");
+        exit(-1);
+    }
+
+    /* Fill newg with g values */ 
+    newg->nvertices = g->nvertices;
+    newg->nedges = g->nedges;
+    newg->directed = g->directed;
+    for (i=1; i<newg->nedges; ++i)
+        newg->edges[i] = copy_list(g->edges[i]);
+    for (i=1; i<newg->nvertices; ++i)
+        newg->degree[i] = g->degree[i];
+
     return newg;
 }
 
@@ -271,17 +287,41 @@ void help()
 int equal(char *s1, char *s2)
 {
     if (strcmp(s1, s2))
-	return 0;
+        return 0;
     return 1;
 }
 
 graphT *which_graph(char *g, graphT *myg1, graphT *myg2)
 {
     if (equal(g, "myg1"))
-	return myg1;
+        return myg1;
     else if (equal(g, "myg2"))
-	return myg2;
+        return myg2;
     return NULL;
+}
+
+edgenodeT *copy_list(edgenodeT *list)
+{
+    edgenodeT *new, *start=NULL, *tail=NULL;
+
+    /* For every node in list... */
+    while (list) {
+        /* Create copy of node */
+        new = (edgenodeT *) malloc(sizeof(edgenodeT));
+        new->y = list->y;
+        new->weight = list->weight;
+        new->next = NULL;
+
+        /* Append copy to new list */
+        if (tail)
+            tail->next = new;
+        else
+            start = new;
+        
+        tail = new;
+        list = list->next;
+    }
+    return start;
 }
 
 void delete_edge(graphT *g, int x, int y)
