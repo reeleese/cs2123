@@ -44,7 +44,7 @@ void num_of_conn_comp(graphT *g);
 
 int main(int argc, char *argv[]) 
 {
-    int done, i_arg1, i_arg2, i_arg3;
+    int done, i_arg1, i_arg2, i_arg3, c;
     char command [100], s_arg1[100], s_arg2[100];
     graphT *g1, *g2;
 
@@ -70,6 +70,7 @@ int main(int argc, char *argv[])
     print_graph(myg2, "myg2");
     
     /* Menu loop */
+    done = 0;
     while (!done) {
         printf("Enter a command:\n>");
         scanf("%s", command);
@@ -126,14 +127,16 @@ int main(int argc, char *argv[])
 	    num_of_conn_comp(g1);
         } else if (equal(command, "quit")) {
             done = 1;
-	    printf("Bye bg1 = which_graph(s_arg1);ye.\n");
+	    printf("Bye bye.\n");
         } else if (equal(command, "help")) {
 	    help();
-
         } else { /* Unrecognized command */
+	    /* clear stdin */
+	    while ((c = getchar()) != '\n' && c != EOF) { }
             printf("Unrecognized command. ");
             printf("Type \"help\" for a list of commands.\n");
         }
+	printf("\n");
     }
 
     free_graph(myg1);
