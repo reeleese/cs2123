@@ -1,3 +1,6 @@
+CC = gcc
+CFLAGS = -Wall -g
+
 all: driver
 
 tidy:
@@ -6,9 +9,6 @@ tidy:
 scratch: tidy
 	rm -f *.o *.a driver-list driver-array
 	rm -r *.dSYM
-
-CC = clang
-CFLAGS = -Wall -g
 
 tree.o:	tree.h tree.c
 	$(CC) $(CFLAGS) -c tree.c

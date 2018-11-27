@@ -16,7 +16,7 @@ int main()
 
     done = 0;
     while (!done) {
-        printf("Enter a command:\n >");
+        printf("Enter a command:\n>");
         scanf("%s", command);
         
         if (equal(command, "insert")) {
@@ -73,6 +73,20 @@ int equal (char *a, char *b)
 void listCommands()
 {
     printf("Commands:\n");
+    printf("  insert...\tInserts a value\n");
+    printf("  find...\tDetermine if a value lies in the tree\n");
+    printf("  delete...\tDelete a value from the tree\n");
+    printf("  inorder\tDisplay an inorder traversal of the tree\n");
+    printf("  preorder\tDisplay a preorder traversal of the tree\n");
+    printf("  postorder\tDisplay a postorder traversal of the tree\n");
+    printf("  levelorder\tDisplay a levelorder traversal of the tree\n");
+    printf("  max\t\tGet the max value\n");
+    printf("  min\t\tGet the min value\n");
+    printf("  average\tGet the average value\n");
+    printf("  height\tGet the height of the tree\n");
+    printf("  count\t\tGet the number of nodes in the tree\n");
+    printf("  sum\t\tGet the sum of all values\n");
+    printf("  quit\t\tQuit this program\n");
 }
 
 void print(int x)
