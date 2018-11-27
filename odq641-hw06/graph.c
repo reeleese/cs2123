@@ -17,6 +17,8 @@ typedef struct {
     int nvertices;
     int nedges;
     bool directed;
+    int visited[MAXV+1];
+    int parent[MAXV+1];
 } graphT;
 
 
@@ -31,6 +33,7 @@ void help();
 int equal(char *s1, char *s2);
 graphT *which_graph(char *g, graphT *myg1, graphT *myg2);
 edgenodeT *copy_list(edgenodeT *);
+void print_path(graphT *g, int start, int end);
 
 void delete_edge(graphT *g, int x, int y);
 void print_degree(graphT *g);
@@ -39,6 +42,7 @@ void eliminate_links(graphT *g, int minW, int maxW);
 void different_links(graphT *g1, graphT *g2);
 void common_links(graphT *g1, graphT *g2);
 void dfs(graphT *g, int start);
+void dfs_helper(graphT *g, int v);
 void bfs(graphT *g, int start);
 void is_connected(graphT *g);
 void num_of_conn_comp(graphT *g);
@@ -324,6 +328,21 @@ edgenodeT *copy_list(edgenodeT *list)
     return start;
 }
 
+void print_path(graphT *g, int start, int end)
+{
+    int i;
+    stackADT s;
+
+    s = NewStack();
+    for (i=end; i!=-1; i=g->parent[i])
+        Push(s, i);
+    while(!StackIsEmpty(s)) {
+        printf(" %d ->", Pop(s)); 
+    }
+    printf("\b\b  \n");
+    FreeStack(s);
+}
+
 void delete_edge(graphT *g, int x, int y)
 {
     edgenodeT *ep, *prep=NULL;
@@ -409,7 +428,7 @@ void eliminate_links(graphT *g, int minW, int maxW)
 
 void different_links(graphT *g1, graphT *g2)
 {
-
+    
 }
 
 void common_links(graphT *g1, graphT *g2)
@@ -419,12 +438,80 @@ void common_links(graphT *g1, graphT *g2)
 
 void dfs(graphT *g, int start)
 {
+    int i;
 
+    if (!g) return;
+
+    /* init parent and visited */
+    for (i=1; i<=g->nvertices; ++i) {
+        g->visited[i] = FALSE;
+        g->parent[i] = -1;
+    }
+    
+    /* Do all the dfs business */
+    g->visited[start] = TRUE;
+    dfs_helper(g, start);
+    printf("\n");
+
+    /* Print paths to each node */
+    for (i=1; i<=g->nvertices; ++i) {
+        printf("Path to %d from %d:", i, start);
+        print_path(g, start, i);
+    }
+}
+
+void dfs_helper(graphT *g, int v)
+{
+    edgenodeT *ep;
+    printf("Node %d visited.\n", v);
+
+    /* For each edge to v, dfs unvisited nodes */
+    for (ep=g->edges[v]; ep; ep=ep->next) {
+        if (g->visited[ep->y] == TRUE) continue;
+        g->parent[ep->y] = v;
+        g->visited[ep->y] = TRUE;
+        dfs_helper(g, ep->y);
+    }
 }
 
 void bfs(graphT *g, int start)
 {
+    int i, v;
+    edgenodeT *ep;
+    queueADT q;
 
+    if (!g) return;
+
+    /* init parent, visited, and q */
+    for (i=1; i<=g->nvertices; ++i) {
+        g->visited[i] = FALSE;
+        g->parent[i] = -1;
+    }
+    q = NewQueue();
+
+    /* Prime loop */
+    g->visited[start] = TRUE;
+    printf("Node %d visited.\n", start);
+    Enqueue(q, &start);
+
+    /* Main BFS loop */
+    while(!QueueIsEmpty(q)) {
+        v = *((int *) Dequeue(q));
+        for (ep=g->edges[v]; ep; ep=ep->next) {
+            if (g->visited[ep->y] == TRUE) continue;
+            g->parent[ep->y] = v;
+            g->visited[ep->y] = TRUE;
+            printf("Node %d visited.\n", ep->y);
+            Enqueue(q, &ep->y);
+        }
+    }
+    FreeQueue(q);
+    
+    /* Print paths to each node */
+    for (i=1; i<=g->nvertices; ++i) {
+        printf("Path to %d from %d:", i, start);
+        print_path(g, start, i);
+    }
 }
 
 void is_connected(graphT *g)
