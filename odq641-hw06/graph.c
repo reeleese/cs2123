@@ -27,29 +27,103 @@ void print_graph(graphT *g, char *name);
 void free_graph(graphT *g);
 graphT *copy_graph(graphT *g);
 /* put prototypes for other functions here.... */
+void help();
+int equal(char *s1, char *s2);
 
+void delete_edge(graphT *g, int x, int y);
+void print_degree(graphT *g);
+void print_complement(graphT *g);
+void eliminate_links(graphT *g, int minW, int maxW);
+void different_links(graphT *g1, graphT *g2);
+void common_links(graphT *g1, graphT *g2);
+void dfs(graphT *g, int start);
+void bfs(graphT *g, int start);
+void is_connected(graphT *g);
+void num_of_conn_comp(graphT *g);
 
 int main(int argc, char *argv[]) 
 {
+    int done, i_arg1, i_arg2, i_arg3;
+    char command [100], s_arg1[100], s_arg2[100];
     graphT *myg1=NULL, *myg2=NULL;
+
     if(argc < 2){
         fprintf(stderr, "Usage: %s graph_filename", argv[0]);
         exit(-1);
     }
+
     myg1 = (graphT *) malloc(sizeof(graphT));
     if (myg1==NULL) {
         fprintf(stderr, "Cannot allocate memory for the graph");
         exit(-1);
     }
+
     initialize_graph(myg1, FALSE);
     read_graph(myg1, argv[1]);
     print_graph(myg1, "myg1");
+
     /* first implement copy_graph function and call it here */
     myg2 = copy_graph(myg1); 
     print_graph(myg2, "myg2");
-    /* NOW in a loopget commands and call related functions to perform them... */
+    
+    /* Menu loop */
+    while (!done) {
+        printf("Enter a command:\n>");
+        scanf("%s", command);
+        
+        if (equal(command, "insert")) {
+            scanf("%s %d %d %d", s_arg1, &i_arg1, &i_arg2, &i_arg3);
+            
+	} else if (equal(command, "delete")) {
+            scanf("%s %d %d", s_arg1, &i_arg1, &i_arg2);
+            
+        } else if (equal(command, "printgraph")) {
+            scanf("%s", s_arg1);
+            
+        } else if (equal(command, "printdegree")) {
+            scanf("%s", s_arg1);
+            
+        } else if (equal(command, "printcomplement")) {
+            scanf("%s", s_arg1);
+            
+        } else if (equal(command, "eliminatelinks")) {
+            scanf("%s %d %d", s_arg1, &i_arg1, &i_arg2);
+
+        } else if (equal(command, "differentlinks")) {
+	    scanf("%s %s", s_arg1, s_arg2);
+
+        } else if (equal(command, "commonlinks")) {
+	    scanf("%s %s", s_arg1, s_arg2);
+
+        } else if (equal(command, "dfs")) {
+	    scanf("%s %d", s_arg1, &i_arg1);
+
+        } else if (equal(command, "bfs")) {
+	    scanf("%s %d", s_arg1, &i_arg1);
+
+        } else if (equal(command, "isconnected")) {
+	    scanf("%s", s_arg1);
+
+        } else if (equal(command, "numofconncomp")) {
+	    scanf("%s", s_arg1);
+
+        } else if (equal(command, "quit")) {
+            done = 1;
+	    printf("Bye bye.\n");
+        } else if (equal(command, "help")) {
+	    help();
+
+        } else { /* Unrecognized command */
+            printf("Unrecognized command. ");
+            printf("Type \"help\" for a list of commands.\n");
+        }
+    }
+
     free_graph(myg1);
+    free_graph(myg2);
+    return 0;
 }
+
 void initialize_graph(graphT *g, bool directed)
 {
     int i;
@@ -142,3 +216,64 @@ graphT *copy_graph(graphT *g)
     return newg;
 }
 /* your other functions */
+void help()
+{
+
+}
+
+int equal(char *s1, char *s2)
+{
+    if (strcmp(s1, s2))
+	return 0;
+    return 1;
+}
+
+void delete_edge(graphT *g, int x, int y)
+{
+
+}
+
+void print_degree(graphT *g)
+{
+
+}
+
+void print_complement(graphT *g)
+{
+
+}
+
+void eliminate_links(graphT *g, int minW, int maxW)
+{
+
+}
+
+void different_links(graphT *g1, graphT *g2)
+{
+
+}
+
+void common_links(graphT *g1, graphT *g2)
+{
+
+}
+
+void dfs(graphT *g, int start)
+{
+
+}
+
+void bfs(graphT *g, int start)
+{
+
+}
+
+void is_connected(graphT *g)
+{
+
+}
+
+void num_of_conn_comp(graphT *g)
+{
+
+}
