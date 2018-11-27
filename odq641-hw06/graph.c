@@ -221,7 +221,7 @@ void print_graph(graphT *g, char *name)
             printf(" %d(w=%d),", pe->y, pe->weight);
             pe = pe->next;
         }
-        printf("\n");
+        printf("\b \n");
     }
 }
 
@@ -347,7 +347,7 @@ void delete_edge(graphT *g, int x, int y)
 
 void print_degree(graphT *g)
 {
-
+    
 }
 
 void print_complement(graphT *g)
