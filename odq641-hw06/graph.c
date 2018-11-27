@@ -441,7 +441,6 @@ void dfs(graphT *g, int start)
     int i;
 
     if (!g) return;
-<<<<<<< HEAD
 
     /* init parent and visited */
     for (i=1; i<=g->nvertices; ++i) {
@@ -461,37 +460,12 @@ void dfs(graphT *g, int start)
     }
 }
 
-=======
-
-    /* init parent and visited */
-    for (i=1; i<=g->nvertices; ++i) {
-        g->visited[i] = FALSE;
-        g->parent[i] = -1;
-    }
-    
-    /* Do all the dfs business */
-    g->visited[start] = TRUE;
-    dfs_helper(g, start);
-    printf("\n");
-
-    /* Print paths to each node */
-    for (i=1; i<=g->nvertices; ++i) {
-        printf("Path to %d from %d:", i, start);
-        print_path(g, start, i);
-    }
-}
-
->>>>>>> 1d558a2b9641fe523bf5397684ed4c2251c6e143
 void dfs_helper(graphT *g, int v)
 {
     edgenodeT *ep;
     printf("Node %d visited.\n", v);
 
-<<<<<<< HEAD
-    /* For each edge to v, dfs unvisited nodes */
-=======
     /* For each edge to v, dfs unvisited node */
->>>>>>> 1d558a2b9641fe523bf5397684ed4c2251c6e143
     for (ep=g->edges[v]; ep; ep=ep->next) {
         if (g->visited[ep->y] == TRUE) continue;
         g->parent[ep->y] = v;
