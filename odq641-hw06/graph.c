@@ -76,43 +76,57 @@ int main(int argc, char *argv[])
         
         if (equal(command, "insert")) {
             scanf("%s %d %d %d", s_arg1, &i_arg1, &i_arg2, &i_arg3);
-            
+            g1 = which_graph(s_arg1, myg1, myg2);
+	    insert_edge(g1, i_arg1, i_arg2, i_arg3);
 	} else if (equal(command, "delete")) {
             scanf("%s %d %d", s_arg1, &i_arg1, &i_arg2);
-            
+            g1 = which_graph(s_arg1, myg1, myg2);
+	    delete_edge(g1, i_arg1, i_arg2);
         } else if (equal(command, "printgraph")) {
-            scanf("%s", s_arg1);
-            
+            scanf("%s %s", s_arg1, s_arg2);
+            g1 = which_graph(s_arg1, myg1, myg2);
+	    print_graph(g1, s_arg2);
         } else if (equal(command, "printdegree")) {
             scanf("%s", s_arg1);
-            
+            g1 = which_graph(s_arg1, myg1, myg2);
+	    print_degree(g1);
         } else if (equal(command, "printcomplement")) {
             scanf("%s", s_arg1);
-            
+            g1 = which_graph(s_arg1, myg1, myg2);
+	    print_complement(g1);
         } else if (equal(command, "eliminatelinks")) {
             scanf("%s %d %d", s_arg1, &i_arg1, &i_arg2);
-
+	    g1 = which_graph(s_arg1, myg1, myg2);
+	    eliminate_links(g1, i_arg1, i_arg2);	    
         } else if (equal(command, "differentlinks")) {
 	    scanf("%s %s", s_arg1, s_arg2);
-
-        } else if (equal(command, "commonlinks")) {
+	    g1 = which_graph(s_arg1, myg1, myg2);
+	    g2 = which_graph(s_arg2, myg1, myg2);
+	    different_links(g1, g2);
+	} else if (equal(command, "commonlinks")) {
 	    scanf("%s %s", s_arg1, s_arg2);
-
-        } else if (equal(command, "dfs")) {
+	    g1 = which_graph(s_arg1, myg1, myg2);
+	    g2 = which_graph(s_arg2, myg1, myg2);
+	    common_links(g1, g2);
+	} else if (equal(command, "dfs")) {
 	    scanf("%s %d", s_arg1, &i_arg1);
-
+	    g1 = which_graph(s_arg1, myg1, myg2);
+	    dfs(g1, i_arg1);
         } else if (equal(command, "bfs")) {
 	    scanf("%s %d", s_arg1, &i_arg1);
-
+	    g1 = which_graph(s_arg1, myg1, myg2);
+	    bfs(g1, i_arg1);
         } else if (equal(command, "isconnected")) {
 	    scanf("%s", s_arg1);
-
+	    g1 = which_graph(s_arg1, myg1, myg2);
+	    is_connected(myg1);
         } else if (equal(command, "numofconncomp")) {
 	    scanf("%s", s_arg1);
-
+	    g1 = which_graph(s_arg1, myg1, myg2);
+	    num_of_conn_comp(g1);
         } else if (equal(command, "quit")) {
             done = 1;
-	    printf("Bye bye.\n");
+	    printf("Bye bg1 = which_graph(s_arg1);ye.\n");
         } else if (equal(command, "help")) {
 	    help();
 
