@@ -29,6 +29,7 @@ graphT *copy_graph(graphT *g);
 /* put prototypes for other functions here.... */
 void help();
 int equal(char *s1, char *s2);
+graphT *which_graph(char *g, graphT *myg1, graphT *myg2);
 
 void delete_edge(graphT *g, int x, int y);
 void print_degree(graphT *g);
@@ -45,6 +46,8 @@ int main(int argc, char *argv[])
 {
     int done, i_arg1, i_arg2, i_arg3;
     char command [100], s_arg1[100], s_arg2[100];
+    graphT *g1, *g2;
+
     graphT *myg1=NULL, *myg2=NULL;
 
     if(argc < 2){
@@ -226,6 +229,15 @@ int equal(char *s1, char *s2)
     if (strcmp(s1, s2))
 	return 0;
     return 1;
+}
+
+graphT *which_graph(char *g, graphT *myg1, graphT *myg2)
+{
+    if (equal(g, "myg1"))
+	return myg1;
+    else if (equal(g, "myg2"))
+	return myg2;
+    return NULL;
 }
 
 void delete_edge(graphT *g, int x, int y)
