@@ -181,14 +181,27 @@ void read_graph(graphT *g, char *filename)
 
 void insert_edge(graphT *g, int x, int y, int w)
 {
-    edgenodeT *pe;
+    edgenodeT *pe, *ep, *prep=NULL;
     pe = malloc(sizeof(edgenodeT));
-    /* check if NULL */
+    if (pe == NULL) {
+	fprintf(stderr, "Not enough memory");
+	exit(-1);
+    }
+    
     pe->weight = w;
     pe->y = y;
-    /* YOU MUST MODIFY THIS FUNCTION SO IT WILL KEEP LINK LIST SORTED W.R.T. NEIGHBOR IDs. */
-    pe->next = g->edges[x];   
-    g->edges[x] = pe;
+
+    for (ep=g->edges[x]; ep; ep=ep->next) {
+	if (ep->y > pe->y)
+	    break;
+	prep = ep;
+    }
+    if (prep)
+	prep->next = pe;
+    else
+	g->edges[x] = pe;
+    pe->next = ep;
+
     g->degree[x]++;
     g->nedges++;
 }
