@@ -235,10 +235,24 @@ graphT *copy_graph(graphT *g)
     newg = g;
     return newg;
 }
+
 /* your other functions */
 void help()
 {
-
+    printf("List of available commands: \n");
+    printf("*  insert\t\t[myg1 | myg2] x y w\n");
+    printf("*  delete\t\t[myg1 | myg2] x y\n");
+    printf("*  printgraph\t\t[myg1 | myg2]\n");
+    printf("*  printdegree\t\t[myg1 | myg2]\n");
+    printf("*  printcomplement\t[myg1 | myg2]\n");
+    printf("*  eliminatelinks\t[myg1 | myg2] minW maxW\n");
+    printf("*  differentlinks\t[myg1 | myg2] [myg1 | myg2]\n");
+    printf("*  commonlinks\t\t[myg1 | myg2] [myg1 | myg2]\n");
+    printf("*  dfs\t\t\t[myg1 | myg2] x\n");
+    printf("*  bfs\t\t\t[myg1 | myg2] x\n");
+    printf("*  isconnected\t\t[myg1 | myg2]\n");
+    printf("*  numofconncomp\t[myg1 | myg2]\n");
+    printf("*  quit\n");
 }
 
 int equal(char *s1, char *s2)
