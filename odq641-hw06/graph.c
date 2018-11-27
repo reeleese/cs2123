@@ -257,9 +257,9 @@ graphT *copy_graph(graphT *g)
     newg->nvertices = g->nvertices;
     newg->nedges = g->nedges;
     newg->directed = g->directed;
-    for (i=1; i<newg->nedges; ++i)
+    for (i=1; i<=newg->nedges; ++i)
         newg->edges[i] = copy_list(g->edges[i]);
-    for (i=1; i<newg->nvertices; ++i)
+    for (i=1; i<=newg->nvertices; ++i)
         newg->degree[i] = g->degree[i];
 
     return newg;
@@ -347,7 +347,29 @@ void delete_edge(graphT *g, int x, int y)
 
 void print_degree(graphT *g)
 {
+    int i;
+    edgenodeT *ep;
+
+    if (!g) return;
+    int in_degree[g->nvertices+1];
+
+    /* zero out in degree for accumulatiion later */
+    for (i=1; i<=g->nvertices; ++i)
+        in_degree[i] = 0;
+
+    /* For each node in the graph... */
+    for (i=1; i<=g->nvertices; ++i)
+        for (ep=g->edges[i]; ep; ep=ep->next)
+            ++in_degree[ep->y];
     
+    /* Print degrees for each node */
+    for (i=1; i<=g->nvertices; ++i) {
+        if (g->directed)
+            printf("Node %d:  in degree=%-3d out degree=%-3d\n", i, in_degree[i],
+                   g->degree[i]);
+        else
+            printf("Node %d:  degree=%-3d\n", i, g->degree[i]);
+    }
 }
 
 void print_complement(graphT *g)
