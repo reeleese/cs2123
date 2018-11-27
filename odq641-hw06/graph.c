@@ -326,7 +326,23 @@ edgenodeT *copy_list(edgenodeT *list)
 
 void delete_edge(graphT *g, int x, int y)
 {
+    edgenodeT *ep, *prep=NULL;
+    
+    if (!g) return;
 
+    /* For every edge from node x... */
+    for (ep=g->edges[x]; ep; ep=ep->next) {
+        /* if edge matches, delete it. NOTE: will not delete duplicates */
+        if (ep->y == y) {
+            if (prep)
+                prep->next = ep->next;
+            else
+                g->edges[x] = ep->next;
+            free(ep);
+            return;
+        } else
+            prep = ep;
+    }
 }
 
 void print_degree(graphT *g)
