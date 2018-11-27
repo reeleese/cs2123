@@ -377,9 +377,34 @@ void print_complement(graphT *g)
 
 }
 
+/* MAKE AN EFFORT TO CLEAN THIS UP */
 void eliminate_links(graphT *g, int minW, int maxW)
 {
+    int i;
+    edgenodeT *tmp, *ep, *prep;
 
+    if (!g) return;
+
+    /* For each edge in g... */
+    for (i=1; i<=g->nvertices; ++i) {
+        prep=NULL;
+        ep = g->edges[i];
+        while(ep) {
+            /* delete edge if necessary */
+            if (ep->weight < minW || ep->weight > maxW) {
+                if (prep)
+                    prep->next = ep->next;
+                else
+                    g->edges[i] = ep->next;
+                tmp = ep;
+                ep = ep->next;
+                free(tmp);
+            } else {
+                prep = ep;
+                ep = ep->next;
+            }
+        }
+    }
 }
 
 void different_links(graphT *g1, graphT *g2)
