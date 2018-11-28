@@ -84,10 +84,14 @@ int main(int argc, char *argv[])
             scanf("%s %d %d %d", s_arg1, &i_arg1, &i_arg2, &i_arg3);
             g1 = which_graph(s_arg1, myg1, myg2);
             insert_edge(g1, i_arg1, i_arg2, i_arg3);
+            if (g1 && !g1->directed)
+                insert_edge(g1, i_arg2, i_arg1, i_arg3); 
         } else if (equal(command, "delete")) {
             scanf("%s %d %d", s_arg1, &i_arg1, &i_arg2);
             g1 = which_graph(s_arg1, myg1, myg2);
             delete_edge(g1, i_arg1, i_arg2);
+            if (g1 && !g1->directed)
+                delete_edge(g1, i_arg2, i_arg1);
         } else if (equal(command, "printgraph")) {
             scanf("%s", s_arg1);
             g1 = which_graph(s_arg1, myg1, myg2);
