@@ -43,9 +43,11 @@ void different_links(graphT *g1, graphT *g2);
 void common_links(graphT *g1, graphT *g2);
 void dfs(graphT *g, int start);
 void dfs_helper(graphT *g, int v);
-void bfs(graphT *g, int start, bool verbose);
+void bfs(graphT *g, int start);
+void bfs_helper(graphT *g, int start, bool verbose);
 void is_connected(graphT *g);
 void num_of_conn_comp(graphT *g);
+int conn_comp_helper(graphT *g, int v);
 
 int main(int argc, char *argv[]) 
 {
@@ -125,12 +127,12 @@ int main(int argc, char *argv[])
         } else if (equal(command, "bfs")) {
             scanf("%s %d", s_arg1, &i_arg1);
             g1 = which_graph(s_arg1, myg1, myg2);
-            bfs(g1, i_arg1, TRUE);
+            bfs(g1, i_arg1);
         } else if (equal(command, "isconnected")) {
             scanf("%s", s_arg1);
             g1 = which_graph(s_arg1, myg1, myg2);
             is_connected(myg1);
-        } else if (equal(command, "numofconncomp")) {
+        } else if (equal(command, "n")) {
             scanf("%s", s_arg1);
             g1 = which_graph(s_arg1, myg1, myg2);
             num_of_conn_comp(g1);
@@ -478,12 +480,10 @@ void dfs_helper(graphT *g, int v)
     }
 }
 
-void bfs(graphT *g, int start, bool verbose)
+void bfs(graphT *g, int start)
 {
-    int i, v;
-    edgenodeT *ep;
-    queueADT q;
-
+    int i;
+        
     if (!g) return;
 
     /* init parent, visited, and q */
@@ -491,13 +491,31 @@ void bfs(graphT *g, int start, bool verbose)
         g->visited[i] = FALSE;
         g->parent[i] = -1;
     }
+   
+    /* Do all the bfs business */
+    bfs_helper(g, start, TRUE);
+
+    /* Print paths to each node */
+    for (i=1; i<=g->nvertices; ++i) {
+        printf("Path to %d from %d:", i, start);
+        print_path(g, start, i);
+    }
+}
+
+void bfs_helper(graphT *g, int v, bool verbose)
+{
+    queueADT q;
+    edgenodeT *ep;
+    
+    if (!g) return;
+    
     q = NewQueue();
 
     /* Prime loop */
-    g->visited[start] = TRUE;
+    g->visited[v] = TRUE;
     if (verbose)
-        printf("Node %d visited.\n", start);
-    Enqueue(q, &start);
+        printf("Node %d visited.\n", v);
+    Enqueue(q, &v);
 
     /* Main BFS loop */
     while(!QueueIsEmpty(q)) {
@@ -506,19 +524,11 @@ void bfs(graphT *g, int start, bool verbose)
             if (g->visited[ep->y] == TRUE) continue;
             g->parent[ep->y] = v;
             g->visited[ep->y] = TRUE;
-            if (verbose)
-                printf("Node %d visited.\n", ep->y);
+            printf("Node %d visited.\n", ep->y);
             Enqueue(q, &ep->y);
         }
     }
     FreeQueue(q);
-    
-    /* Print paths to each node */
-    if (verbose)
-        for (i=1; i<=g->nvertices; ++i) {
-            printf("Path to %d from %d:", i, start);
-            print_path(g, start, i);
-        }
 }
 
 void is_connected(graphT *g)
@@ -537,7 +547,7 @@ void is_connected(graphT *g)
     for (i=1; i<=g->nvertices; ++i)
         g->visited[i] = FALSE;
 
-    bfs(g, 1, FALSE);
+    bfs_helper(g, 1, FALSE);
 
     for (i=1; i<=g->nvertices; ++i)
         if (g->visited[i] == FALSE) {
@@ -549,5 +559,6 @@ void is_connected(graphT *g)
 
 void num_of_conn_comp(graphT *g)
 {
-
+    
 }
+
