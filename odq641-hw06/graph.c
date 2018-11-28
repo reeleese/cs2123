@@ -43,7 +43,7 @@ void different_links(graphT *g1, graphT *g2);
 void common_links(graphT *g1, graphT *g2);
 void dfs(graphT *g, int start);
 void dfs_helper(graphT *g, int v);
-void bfs(graphT *g, int start);
+void bfs(graphT *g, int start, bool verbose);
 void is_connected(graphT *g);
 void num_of_conn_comp(graphT *g);
 
@@ -121,7 +121,7 @@ int main(int argc, char *argv[])
         } else if (equal(command, "bfs")) {
             scanf("%s %d", s_arg1, &i_arg1);
             g1 = which_graph(s_arg1, myg1, myg2);
-            bfs(g1, i_arg1);
+            bfs(g1, i_arg1, TRUE);
         } else if (equal(command, "isconnected")) {
             scanf("%s", s_arg1);
             g1 = which_graph(s_arg1, myg1, myg2);
@@ -474,7 +474,7 @@ void dfs_helper(graphT *g, int v)
     }
 }
 
-void bfs(graphT *g, int start)
+void bfs(graphT *g, int start, bool verbose)
 {
     int i, v;
     edgenodeT *ep;
@@ -491,7 +491,8 @@ void bfs(graphT *g, int start)
 
     /* Prime loop */
     g->visited[start] = TRUE;
-    printf("Node %d visited.\n", start);
+    if (verbose)
+        printf("Node %d visited.\n", start);
     Enqueue(q, &start);
 
     /* Main BFS loop */
@@ -501,22 +502,45 @@ void bfs(graphT *g, int start)
             if (g->visited[ep->y] == TRUE) continue;
             g->parent[ep->y] = v;
             g->visited[ep->y] = TRUE;
-            printf("Node %d visited.\n", ep->y);
+            if (verbose)
+                printf("Node %d visited.\n", ep->y);
             Enqueue(q, &ep->y);
         }
     }
     FreeQueue(q);
     
     /* Print paths to each node */
-    for (i=1; i<=g->nvertices; ++i) {
-        printf("Path to %d from %d:", i, start);
-        print_path(g, start, i);
-    }
+    if (verbose)
+        for (i=1; i<=g->nvertices; ++i) {
+            printf("Path to %d from %d:", i, start);
+            print_path(g, start, i);
+        }
 }
 
 void is_connected(graphT *g)
 {
+    int i;
+    
+    if (!g) return;
+    if (g->directed) {
+        printf("We do not provide this functionality for directed graphs.\n");
+        printf("Purchase the next version of this program :)\n");
+        return;
+    }
+        
 
+    /* init visited */
+    for (i=1; i<=g->nvertices; ++i)
+        g->visited[i] = FALSE;
+
+    bfs(g, 1, FALSE);
+
+    for (i=1; i<=g->nvertices; ++i)
+        if (g->visited[i] == FALSE) {
+            printf("NOT CONNECTED\n");
+            return;
+        }
+    printf("CONNECTED");
 }
 
 void num_of_conn_comp(graphT *g)
