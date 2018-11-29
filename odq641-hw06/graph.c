@@ -208,10 +208,13 @@ void insert_edge(graphT *g, int x, int y, int w)
             free(pe);
             return;
         }
+        /* We found where pe goes */
         if (ep->y > pe->y)
             break;
         prep = ep;
     }
+
+    /* pe either goes before ep or at the end */
     if (prep)
         prep->next = pe;
     else
@@ -369,6 +372,8 @@ void delete_edge(graphT *g, int x, int y)
             else
                 g->edges[x] = ep->next;
             free(ep);
+            --g->degree[i];
+            --g->nedges;
             return;
         } else
             prep = ep;
@@ -407,9 +412,11 @@ void print_complement(graphT *g)
     int i, j;
     edgenodeT *ep;
     graphT *gcomp;
+
+    if (!g) return;
     
     /* init complement to be g with no edges */
-    gcomp = (graphT *) malloc(sizeof(graphT));
+    gcomp = (graphT *) malloc(sizeof(graphT))
     initialize_graph(gcomp, g->directed);
     gcomp->nvertices = g->nvertices;
 
@@ -432,7 +439,6 @@ void print_complement(graphT *g)
     free_graph(gcomp);
 }
 
-/* MAKE AN EFFORT TO CLEAN THIS UP */
 void eliminate_links(graphT *g, int minW, int maxW)
 {
     int i;
@@ -625,7 +631,6 @@ void is_connected(graphT *g)
         return;
     }
         
-
     /* init visited */
     for (i=1; i<=g->nvertices; ++i)
         g->visited[i] = FALSE;
