@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
     /* Menu loop */
     done = 0;
     while (!done) {
-        printf("Enter a command:\n>");
+        printf("\nEnter a command:\n>");
         scanf("%s", command);
         to_upper(command);
         
@@ -134,7 +134,7 @@ int main(int argc, char *argv[])
         } else if (equal(command, "ISCONNECTED")) {
             scanf("%s", s_arg1);
             g1 = which_graph(s_arg1, myg1, myg2);
-            is_connected(myg1);
+            is_connected(g1);
         } else if (equal(command, "NUMOFCONNCOMP")) {
             scanf("%s", s_arg1);
             g1 = which_graph(s_arg1, myg1, myg2);
@@ -145,12 +145,11 @@ int main(int argc, char *argv[])
         } else if (equal(command, "HELP")) {
             help();
         } else { /* Unrecognized command */
-            /* clear stdin */
-            while ((c = getchar()) != '\n' && c != EOF) { }
             printf("Unrecognized command. ");
             printf("Type \"help\" for a list of commands.\n");
         }
-        printf("\n");
+        /* clear stdin */
+        while ((c = getchar()) != '\n' && c != EOF) { }
     }
 
     free_graph(myg1);
@@ -195,35 +194,35 @@ void read_graph(graphT *g, char *filename)
 
 void insert_edge(graphT *g, int x, int y, int w)
 {
-    edgenodeT *pe, *ep, *prep=NULL;
-    pe = malloc(sizeof(edgenodeT));
-    if (pe == NULL) {
+    edgenodeT *new, *ep, *prep=NULL;
+    new = malloc(sizeof(edgenodeT));
+    if (new == NULL) {
         fprintf(stderr, "Not enough memory");
         exit(-1);
     }
     
-    pe->weight = w;
-    pe->y = y;
+    new->weight = w;
+    new->y = y;
 
     for (ep=g->edges[x]; ep; ep=ep->next) {
         /* update weight and toss pe if x->y exists in g */
-        if (ep->y == pe->y) {
-            ep->weight = pe->weight;
-            free(pe);
+        if (ep->y == new->y) {
+            ep->weight = new->weight;
+            free(new);
             return;
         }
         /* We found where pe goes */
-        if (ep->y > pe->y)
+        if (ep->y > new->y)
             break;
         prep = ep;
     }
 
     /* pe either goes before ep or at the end */
     if (prep)
-        prep->next = pe;
+        prep->next = new;
     else
-        g->edges[x] = pe;
-    pe->next = ep;
+        g->edges[x] = new;
+    new->next = ep;
 
     g->degree[x]++;
     g->nedges++;
@@ -319,6 +318,7 @@ graphT *which_graph(char *g, graphT *myg1, graphT *myg2)
         return myg1;
     else if (equal(g, "myg2"))
         return myg2;
+    printf("That is not a recognized graph name.\nTry 'myg1' or 'myg2'\n");
     return NULL;
 }
 
@@ -351,6 +351,8 @@ void print_path(graphT *g, int start, int end)
     int i;
     stackADT s;
 
+    if (!g) return;
+
     s = NewStack();
     for (i=end; i!=-1; i=g->parent[i])
         Push(s, i);
@@ -364,10 +366,8 @@ void print_path(graphT *g, int start, int end)
 void to_upper(char str[])
 {
     int i;
-    for (i=0; i<=strlen(str); ++i) {
-        printf("ye\n");
-        str[i] = toupper((unsigned char) str[i]);
-    }
+    for (i=0; i<=strlen(str); ++i)
+         str[i] = toupper((unsigned char) str[i]);
 }
 
 void delete_edge(graphT *g, int x, int y)
@@ -448,6 +448,8 @@ void print_complement(graphT *g)
             }
         }
     }
+
+    /* Print results and free complement */
     print_graph(gcomp, "complement");
     free_graph(gcomp);
 }
@@ -488,6 +490,7 @@ void different_links(graphT *g1, graphT *g2)
 
     if (!g1 || !g2) return;
     
+    /* size = the larger number of vertices */
     size = (g1->nvertices > g2->nvertices? g1->nvertices
                                          : g2->nvertices);
     
@@ -516,7 +519,8 @@ void common_links(graphT *g1, graphT *g2)
     edgenodeT *ep1, *ep2;
 
     if (!g1 || !g2) return;
-    
+   
+    /* size = the smaller number of vertices */ 
     size = (g1->nvertices < g2->nvertices? g1->nvertices
                                          : g2->nvertices);
     
@@ -553,7 +557,6 @@ void dfs_print(graphT *g, int start)
     }
     
     /* Do all the dfs business */
-    g->visited[start] = TRUE;
     dfs(g, start, TRUE);
     printf("\n");
 
@@ -567,6 +570,7 @@ void dfs_print(graphT *g, int start)
 void dfs(graphT *g, int v, bool VERBOSE)
 {
     edgenodeT *ep;
+    g->visited[v] = TRUE;
     if (VERBOSE)
         printf("Node %d visited.\n", v);
 
@@ -574,7 +578,6 @@ void dfs(graphT *g, int v, bool VERBOSE)
     for (ep=g->edges[v]; ep; ep=ep->next) {
         if (g->visited[ep->y] == TRUE) continue;
         g->parent[ep->y] = v;
-        g->visited[ep->y] = TRUE;
         dfs(g, ep->y, VERBOSE);
     }
 }
@@ -604,8 +607,7 @@ void bfs_print(graphT *g, int start)
 void bfs(graphT *g, int v, bool VERBOSE)
 {
     queueADT q;
-    edgenodeT *ep;
-    
+    edgenodeT *ep;    
     if (!g) return;
     
     q = NewQueue();
@@ -655,7 +657,7 @@ void is_connected(graphT *g)
             printf("NOT CONNECTED\n");
             return;
         }
-    printf("CONNECTED");
+    printf("CONNECTED\n");
 }
 
 void num_of_conn_comp(graphT *g)
@@ -684,6 +686,7 @@ void num_of_conn_comp(graphT *g)
             bfs(g, i, FALSE);
         }
     }
-    printf("%d components.\n", count);
+    printf("%d component", count);
+    printf(count>1? "s.\n" : ".\n");
 }
 
