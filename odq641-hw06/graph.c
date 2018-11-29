@@ -464,7 +464,32 @@ void different_links(graphT *g1, graphT *g2)
 
 void common_links(graphT *g1, graphT *g2)
 {
+    int i, size;
+    edgenodeT *ep1, *ep2;
+
     if (!g1 || !g2) return;
+    
+    size = (g1->nvertices < g2->nvertices? g1->nvertices
+                                         : g2->nvertices);
+    
+    /* For each node, stopping at last node in smaller graph... */
+    for (i=1; i<=size; ++i) {
+        ep1 = g1->edges[i];
+        ep2 = g2->edges[i];
+        /* Print out only common nodes, increment otherwise */
+        while (ep1 && ep2) {
+            if (ep1->y < ep2->y) {
+                ep1=ep1->next;
+            } else if (ep1->y > ep2->y) {
+                ep2=ep2->next;
+            } else {
+                printf("%d -> %d\n", i, ep1->y);
+                ep1 = ep1->next;
+                ep2 = ep2->next;
+            }
+        }
+    }
+
 }
 
 void dfs_print(graphT *g, int start)
