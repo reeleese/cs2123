@@ -41,10 +41,10 @@ void print_complement(graphT *g);
 void eliminate_links(graphT *g, int minW, int maxW);
 void different_links(graphT *g1, graphT *g2);
 void common_links(graphT *g1, graphT *g2);
-void dfs(graphT *g, int start);
-void dfs_helper(graphT *g, int v);
-void bfs(graphT *g, int start);
-void bfs_helper(graphT *g, int start, bool verbose);
+void dfs_print(graphT *g, int start);
+void dfs(graphT *g, int v, bool VERBOSE);
+void bfs_print(graphT *g, int start);
+void bfs(graphT *g, int start, bool verbose);
 void is_connected(graphT *g);
 void num_of_conn_comp(graphT *g);
 int conn_comp_helper(graphT *g, int v);
@@ -123,16 +123,16 @@ int main(int argc, char *argv[])
         } else if (equal(command, "dfs")) {
             scanf("%s %d", s_arg1, &i_arg1);
             g1 = which_graph(s_arg1, myg1, myg2);
-            dfs(g1, i_arg1);
+            dfs_print(g1, i_arg1);
         } else if (equal(command, "bfs")) {
             scanf("%s %d", s_arg1, &i_arg1);
             g1 = which_graph(s_arg1, myg1, myg2);
-            bfs(g1, i_arg1);
+            bfs_print(g1, i_arg1);
         } else if (equal(command, "isconnected")) {
             scanf("%s", s_arg1);
             g1 = which_graph(s_arg1, myg1, myg2);
             is_connected(myg1);
-        } else if (equal(command, "n")) {
+        } else if (equal(command, "numofconncomp")) {
             scanf("%s", s_arg1);
             g1 = which_graph(s_arg1, myg1, myg2);
             num_of_conn_comp(g1);
@@ -399,7 +399,32 @@ void print_degree(graphT *g)
 
 void print_complement(graphT *g)
 {
+    int i, j;
+    edgenodeT *ep;
+    graphT *gcomp;
+    
+    /* init complement to be g with no edges */
+    gcomp = (graphT *) malloc(sizeof(graphT));
+    initialize_graph(gcomp, g->directed);
+    gcomp->nvertices = g->nvertices;
 
+    /* For each pair of vertices, i and j,  determine if g has
+     * an edge between them. If so, skip it. Otherwise,
+     * insert that edge to gcomp */
+    for (i=1; i<=g->nvertices; ++i) {
+        ep = g->edges[i];
+        for (j=1; j<=g->nvertices; ++j) {
+            if (ep && j<ep->y) { /* edge DNE in g */
+                insert_edge(gcomp, i, j, 1);
+            } else if (ep && j==ep->y) { /* edge in g, move on */
+                ep=ep->next;
+            } else { /* no more edges to i in g, insert remaining j edges */
+                insert_edge(gcomp, i, j, 1);
+            }
+        }
+    }
+    print_graph(gcomp, "complement");
+    free_graph(gcomp);
 }
 
 /* MAKE AN EFFORT TO CLEAN THIS UP */
@@ -442,7 +467,7 @@ void common_links(graphT *g1, graphT *g2)
 
 }
 
-void dfs(graphT *g, int start)
+void dfs_print(graphT *g, int start)
 {
     int i;
 
@@ -456,7 +481,7 @@ void dfs(graphT *g, int start)
     
     /* Do all the dfs business */
     g->visited[start] = TRUE;
-    dfs_helper(g, start);
+    dfs(g, start, TRUE);
     printf("\n");
 
     /* Print paths to each node */
@@ -466,34 +491,35 @@ void dfs(graphT *g, int start)
     }
 }
 
-void dfs_helper(graphT *g, int v)
+void dfs(graphT *g, int v, bool VERBOSE)
 {
     edgenodeT *ep;
-    printf("Node %d visited.\n", v);
+    if (VERBOSE)
+        printf("Node %d visited.\n", v);
 
     /* For each edge to v, dfs unvisited node */
     for (ep=g->edges[v]; ep; ep=ep->next) {
         if (g->visited[ep->y] == TRUE) continue;
         g->parent[ep->y] = v;
         g->visited[ep->y] = TRUE;
-        dfs_helper(g, ep->y);
+        dfs(g, ep->y, VERBOSE);
     }
 }
 
-void bfs(graphT *g, int start)
+void bfs_print(graphT *g, int start)
 {
     int i;
         
     if (!g) return;
 
-    /* init parent, visited, and q */
+    /* init parent, visited */
     for (i=1; i<=g->nvertices; ++i) {
         g->visited[i] = FALSE;
         g->parent[i] = -1;
     }
    
     /* Do all the bfs business */
-    bfs_helper(g, start, TRUE);
+    bfs(g, start, TRUE);
 
     /* Print paths to each node */
     for (i=1; i<=g->nvertices; ++i) {
@@ -502,7 +528,7 @@ void bfs(graphT *g, int start)
     }
 }
 
-void bfs_helper(graphT *g, int v, bool verbose)
+void bfs(graphT *g, int v, bool VERBOSE)
 {
     queueADT q;
     edgenodeT *ep;
@@ -513,7 +539,7 @@ void bfs_helper(graphT *g, int v, bool verbose)
 
     /* Prime loop */
     g->visited[v] = TRUE;
-    if (verbose)
+    if (VERBOSE)
         printf("Node %d visited.\n", v);
     Enqueue(q, &v);
 
@@ -524,7 +550,8 @@ void bfs_helper(graphT *g, int v, bool verbose)
             if (g->visited[ep->y] == TRUE) continue;
             g->parent[ep->y] = v;
             g->visited[ep->y] = TRUE;
-            printf("Node %d visited.\n", ep->y);
+            if (VERBOSE)
+                printf("Node %d visited.\n", ep->y);
             Enqueue(q, &ep->y);
         }
     }
@@ -547,7 +574,7 @@ void is_connected(graphT *g)
     for (i=1; i<=g->nvertices; ++i)
         g->visited[i] = FALSE;
 
-    bfs_helper(g, 1, FALSE);
+    bfs(g, 1, FALSE);
 
     for (i=1; i<=g->nvertices; ++i)
         if (g->visited[i] == FALSE) {
@@ -559,6 +586,23 @@ void is_connected(graphT *g)
 
 void num_of_conn_comp(graphT *g)
 {
-    
+    int i, count;
+
+    if (!g) return;
+
+    /* init visited */
+    for (i=1; i<=g->nvertices; ++i)
+        g->visited[i] = 0;
+
+    /* bfs and check for unvisited vertices, bfs again and
+     * increment count if a vertex was not visited */
+    count = 0;
+    for (i=1; i<=g->nvertices; ++i) {
+        if (g->visited[i] == FALSE) {
+            ++count;
+            bfs(g, i, FALSE);
+        }
+    }
+    printf("%d components.\n", count);
 }
 
