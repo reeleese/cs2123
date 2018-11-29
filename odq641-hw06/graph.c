@@ -464,7 +464,7 @@ void different_links(graphT *g1, graphT *g2)
 
 void common_links(graphT *g1, graphT *g2)
 {
-
+    if (!g1 || !g2) return;
 }
 
 void dfs_print(graphT *g, int start)
@@ -563,6 +563,8 @@ void is_connected(graphT *g)
     int i;
     
     if (!g) return;
+
+    /* Don't do this for directed graphs */
     if (g->directed) {
         printf("We do not provide this functionality for directed graphs.\n");
         printf("Purchase the next version of this program :)\n");
@@ -589,6 +591,13 @@ void num_of_conn_comp(graphT *g)
     int i, count;
 
     if (!g) return;
+
+    /* Don't do this for directed graphs */
+    if (g->directed) {
+        printf("We do not provide this functionality for directed graphs.\n");
+        printf("Purchase the next version of this program :)\n");
+        return;
+    }
 
     /* init visited */
     for (i=1; i<=g->nvertices; ++i)
