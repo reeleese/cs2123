@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include "stack.h"
 #include "queue.h"
 
@@ -34,6 +35,7 @@ int equal(char *s1, char *s2);
 graphT *which_graph(char *g, graphT *myg1, graphT *myg2);
 edgenodeT *copy_list(edgenodeT *);
 void print_path(graphT *g, int start, int end);
+void to_upper(char str[]);
 
 void delete_edge(graphT *g, int x, int y);
 void print_degree(graphT *g);
@@ -80,65 +82,67 @@ int main(int argc, char *argv[])
     while (!done) {
         printf("Enter a command:\n>");
         scanf("%s", command);
+        to_upper(command);
         
-        if (equal(command, "insert")) {
+        if (equal(command, "INSERT")) {
             scanf("%s %d %d %d", s_arg1, &i_arg1, &i_arg2, &i_arg3);
             g1 = which_graph(s_arg1, myg1, myg2);
             insert_edge(g1, i_arg1, i_arg2, i_arg3);
             if (g1 && !g1->directed)
                 insert_edge(g1, i_arg2, i_arg1, i_arg3); 
-        } else if (equal(command, "delete")) {
+        } else if (equal(command, "DELETE")) {
             scanf("%s %d %d", s_arg1, &i_arg1, &i_arg2);
             g1 = which_graph(s_arg1, myg1, myg2);
             delete_edge(g1, i_arg1, i_arg2);
-            if (g1 && !g1->directed)
+            if (g1 && !g1->directed) {
                 delete_edge(g1, i_arg2, i_arg1);
-        } else if (equal(command, "printgraph")) {
+            }
+        } else if (equal(command, "PRINTGRAPH")) {
             scanf("%s", s_arg1);
             g1 = which_graph(s_arg1, myg1, myg2);
             print_graph(g1, s_arg1);
-        } else if (equal(command, "printdegree")) {
+        } else if (equal(command, "PRINTDEGREE")) {
             scanf("%s", s_arg1);
             g1 = which_graph(s_arg1, myg1, myg2);
             print_degree(g1);
-        } else if (equal(command, "printcomplement")) {
+        } else if (equal(command, "PRINTCOMPLEMENT")) {
             scanf("%s", s_arg1);
             g1 = which_graph(s_arg1, myg1, myg2);
             print_complement(g1);
-        } else if (equal(command, "eliminatelinks")) {
+        } else if (equal(command, "ELIMINATELINKS")) {
             scanf("%s %d %d", s_arg1, &i_arg1, &i_arg2);
             g1 = which_graph(s_arg1, myg1, myg2);
             eliminate_links(g1, i_arg1, i_arg2);    
-        } else if (equal(command, "differentlinks")) {
+        } else if (equal(command, "DIFFERENTLINKS")) {
             scanf("%s %s", s_arg1, s_arg2);
             g1 = which_graph(s_arg1, myg1, myg2);
             g2 = which_graph(s_arg2, myg1, myg2);
             different_links(g1, g2);
-        } else if (equal(command, "commonlinks")) {
+        } else if (equal(command, "COMMONLINKS")) {
             scanf("%s %s", s_arg1, s_arg2);
             g1 = which_graph(s_arg1, myg1, myg2);
             g2 = which_graph(s_arg2, myg1, myg2);
             common_links(g1, g2);
-        } else if (equal(command, "dfs")) {
+        } else if (equal(command, "DFS")) {
             scanf("%s %d", s_arg1, &i_arg1);
             g1 = which_graph(s_arg1, myg1, myg2);
             dfs_print(g1, i_arg1);
-        } else if (equal(command, "bfs")) {
+        } else if (equal(command, "BFS")) {
             scanf("%s %d", s_arg1, &i_arg1);
             g1 = which_graph(s_arg1, myg1, myg2);
             bfs_print(g1, i_arg1);
-        } else if (equal(command, "isconnected")) {
+        } else if (equal(command, "ISCONNECTED")) {
             scanf("%s", s_arg1);
             g1 = which_graph(s_arg1, myg1, myg2);
             is_connected(myg1);
-        } else if (equal(command, "numofconncomp")) {
+        } else if (equal(command, "NUMOFCONNCOMP")) {
             scanf("%s", s_arg1);
             g1 = which_graph(s_arg1, myg1, myg2);
             num_of_conn_comp(g1);
-        } else if (equal(command, "quit")) {
+        } else if (equal(command, "QUIT")) {
             done = 1;
             printf("Bye bye.\n");
-        } else if (equal(command, "help")) {
+        } else if (equal(command, "HELP")) {
             help();
         } else { /* Unrecognized command */
             /* clear stdin */
@@ -357,6 +361,15 @@ void print_path(graphT *g, int start, int end)
     FreeStack(s);
 }
 
+void to_upper(char str[])
+{
+    int i;
+    for (i=0; i<=strlen(str); ++i) {
+        printf("ye\n");
+        str[i] = toupper((unsigned char) str[i]);
+    }
+}
+
 void delete_edge(graphT *g, int x, int y)
 {
     edgenodeT *ep, *prep=NULL;
@@ -372,7 +385,7 @@ void delete_edge(graphT *g, int x, int y)
             else
                 g->edges[x] = ep->next;
             free(ep);
-            --g->degree[i];
+            --g->degree[y];
             --g->nedges;
             return;
         } else
@@ -416,7 +429,7 @@ void print_complement(graphT *g)
     if (!g) return;
     
     /* init complement to be g with no edges */
-    gcomp = (graphT *) malloc(sizeof(graphT))
+    gcomp = (graphT *) malloc(sizeof(graphT));
     initialize_graph(gcomp, g->directed);
     gcomp->nvertices = g->nvertices;
 
