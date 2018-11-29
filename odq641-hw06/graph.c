@@ -72,7 +72,6 @@ int main(int argc, char *argv[])
     read_graph(myg1, argv[1]);
     print_graph(myg1, "myg1");
 
-    /* first implement copy_graph function and call it here */
     myg2 = copy_graph(myg1); 
     print_graph(myg2, "myg2");
     
@@ -203,6 +202,12 @@ void insert_edge(graphT *g, int x, int y, int w)
     pe->y = y;
 
     for (ep=g->edges[x]; ep; ep=ep->next) {
+        /* update weight and toss pe if x->y exists in g */
+        if (ep->y == pe->y) {
+            ep->weight = pe->weight;
+            free(pe);
+            return;
+        }
         if (ep->y > pe->y)
             break;
         prep = ep;
@@ -478,7 +483,7 @@ void different_links(graphT *g1, graphT *g2)
                 ep2 = ep2->next;
             } else if (ep2 && ep1->y > ep2->y) { /* ep1->y might be in ep2 */
                 ep2=ep2->next;
-            } else {
+            } else { /* ep2 is empty or ep1 is less than ep2 */
                 printf("%d -> %d\n", i, ep1->y);
                 ep1=ep1->next;
             }
